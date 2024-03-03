@@ -1,0 +1,1 @@
+{"version":3,"file":"FakePresenter.js","sourceRoot":"","sources":["FakePresenter.ts"],"names":[],"mappings":"AAGA,MAAM,OAAO,aAAa;IAA1B;QACE,cAAS,GAAkB,EAAE,OAAO,EAAE,EAAE,EAAE,CAAC;IAK7C,CAAC;IAHC,WAAW,CAAC,IAAY;QACtB,IAAI,CAAC,SAAS,CAAC,OAAO,GAAG,IAAI,CAAC,WAAW,EAAE,CAAC;IAC9C,CAAC;CACF"}

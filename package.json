@@ -1,0 +1,33 @@
+{
+  "name": "@evyweb/simple-ddd-toolkit",
+  "version": "0.0.1",
+  "description": "A simple Typescript Domain Driven Design Toolkit to help you create your aggregates, domain events, command handlers and other stuff.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "tsc",
+    "test": "vitest run",
+    "test:coverage": "jest --coverage",
+    "changeset": "npx changeset"
+  },
+  "keywords": [],
+  "author": "Evyweb",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Evyweb/simple-ddd-toolkit.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
+  }
+}

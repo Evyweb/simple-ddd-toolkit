@@ -1,0 +1,1 @@
+{"version":3,"file":"FakeUseCase.js","sourceRoot":"","sources":["FakeUseCase.ts"],"names":[],"mappings":";;;;;;;;;AAIA,MAAM,OAAO,WAAW;IACtB,YAA6B,SAA4B;QAA5B,cAAS,GAAT,SAAS,CAAmB;IAAG,CAAC;IAEvD,OAAO,CAAC,OAAoB;;YAChC,IAAI,CAAC,SAAS,CAAC,WAAW,CAAC,OAAO,CAAC,IAAI,CAAC,CAAC;QAC3C,CAAC;KAAA;CACF"}

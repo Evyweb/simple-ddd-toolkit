@@ -1,0 +1,1 @@
+{"version":3,"file":"FakeQueryHandler.js","sourceRoot":"","sources":["FakeQueryHandler.ts"],"names":[],"mappings":"AAIA,MAAM,OAAO,gBAAgB;IAC3B,MAAM,CAAC,KAAgB;QACrB,OAAO,OAAO,CAAC,OAAO,CAAC,EAAE,aAAa,EAAE,KAAK,CAAC,IAAI,CAAC,WAAW,EAAE,EAAE,CAAC,CAAC;IACtE,CAAC;CACF"}

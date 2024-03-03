@@ -1,0 +1,1 @@
+{"version":3,"file":"LogUsernameChangedCommandHandler.js","sourceRoot":"","sources":["LogUsernameChangedCommandHandler.ts"],"names":[],"mappings":";;;;;;;;;AAIA,MAAM,OAAO,gCAAgC;IAC3C,YAA6B,MAAc;QAAd,WAAM,GAAN,MAAM,CAAQ;IAAG,CAAC;IAEzC,MAAM,CAAC,EAAE,MAAM,EAAE,OAAO,EAA6B;;YACzD,IAAI,CAAC,MAAM,CAAC,GAAG,CAAC,SAAS,MAAM,sBAAsB,OAAO,GAAG,CAAC,CAAC;QACnE,CAAC;KAAA;CACF"}

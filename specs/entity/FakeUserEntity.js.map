@@ -1,0 +1,1 @@
+{"version":3,"file":"FakeUserEntity.js","sourceRoot":"","sources":["FakeUserEntity.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,MAAM,EAAC,MAAM,yBAAyB,CAAC;AAE/C,MAAM,OAAO,cAAe,SAAQ,MAAoB;IACtD,MAAM,CAAC,MAAM,CAAC,YAA0B;QACtC,wBAAwB;QACxB,OAAO,IAAI,cAAc,CAAC,YAAY,CAAC,CAAC;IAC1C,CAAC;CACF"}

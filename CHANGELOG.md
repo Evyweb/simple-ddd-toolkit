@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.2.0
+
+### Minor Changes
+
+- aa61380: chore(tsconfig): update rules
+
 ## 0.1.0
 
 ### Minor Changes

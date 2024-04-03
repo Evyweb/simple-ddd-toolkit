@@ -11,10 +11,10 @@ describe('Result', () => {
       const result = Result.ok(value);
 
       // Assert
-      expect(result.value).toEqual('test value');
+      expect(result.getValue()).toEqual('test value');
     });
 
-    it('should not contain any error', () => {
+    it('should throw an error instead of accessing the error', () => {
       // Arrange
       const value = 'test value';
 
@@ -22,7 +22,7 @@ describe('Result', () => {
       const result = Result.ok(value);
 
       // Assert
-      expect(result.error).toBeUndefined();
+      expect(() => result.getError()).toThrow();
     });
 
     it('should indicate an "ok" status', () => {
@@ -57,10 +57,10 @@ describe('Result', () => {
       const result = Result.fail(error);
 
       // Assert
-      expect(result.error).toEqual(new Error('test error'));
+      expect(result.getError()).toEqual(new Error('test error'));
     });
 
-    it('should not contain any value', () => {
+    it('should throw an error instead of accessing the value', () => {
       // Arrange
       const error = new Error('test error');
 
@@ -68,7 +68,7 @@ describe('Result', () => {
       const result = Result.fail(error);
 
       // Assert
-      expect(result.value).toBeUndefined();
+      expect(() => result.getValue()).toThrow();
     });
 
     it('should not indicate an "ok" status', () => {

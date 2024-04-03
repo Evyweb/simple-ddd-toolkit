@@ -1,9 +1,8 @@
 export class Result<ValueType, ErrorType extends Error> {
     private readonly _value: ValueType | undefined;
+    private readonly _error: ErrorType | undefined;
 
-    private readonly _error: NonNullable<ErrorType> | undefined;
-
-    private constructor(value?: ValueType, error?: NonNullable<ErrorType>) {
+    private constructor(value?: ValueType, error?: ErrorType) {
         this._value = value;
         this._error = error;
     }
@@ -12,7 +11,7 @@ export class Result<ValueType, ErrorType extends Error> {
         return this._value;
     }
 
-    public get error(): NonNullable<ErrorType> | undefined {
+    public get error(): ErrorType | undefined {
         return this._error;
     }
 
@@ -20,15 +19,15 @@ export class Result<ValueType, ErrorType extends Error> {
         return new Result<ValueType, ErrorType>(value);
     }
 
-    public static fail<ValueType, ErrorType extends Error>(error: NonNullable<ErrorType>): Result<ValueType, ErrorType> {
+    public static fail<ValueType, ErrorType extends Error>(error: ErrorType): Result<ValueType, ErrorType> {
         return new Result<ValueType, ErrorType>(undefined, error);
     }
 
-    public isOk(): this is Result<ValueType, Error> {
+    public isOk(): boolean {
         return this._error === undefined;
     }
 
-    public isFail(): this is Result<ValueType, NonNullable<ErrorType>> {
+    public isFail(): boolean {
         return this._error !== undefined;
     }
 }

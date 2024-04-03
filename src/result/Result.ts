@@ -23,11 +23,11 @@ export class Result<ValueType, ErrorType extends Error> {
         return new Result<ValueType, ErrorType>(undefined, error);
     }
 
-    public isOk(): boolean {
+    public isOk(): this is Result<ValueType, never> {
         return this._error === undefined;
     }
 
-    public isFail(): boolean {
+    public isFail(): this is Result<never, ErrorType> {
         return this._error !== undefined;
     }
 }

@@ -1,4 +1,4 @@
-import {IUseCase} from "../../src/useCase/IUseCase";
+import {IUseCase} from "../../src";
 import {FakeRequest} from "./FakeRequest";
 import {FakePresenterPort} from "./FakePresenterPort";
 

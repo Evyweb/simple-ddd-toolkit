@@ -1,5 +1,4 @@
-import {Uuid, UuidFrom} from "../../src";
-import {UUID} from "../../src";
+import {Uuid, UUID, UuidFrom} from "../../src";
 import {describe, it, expect} from "vitest";
 
 describe('UUID', () => {

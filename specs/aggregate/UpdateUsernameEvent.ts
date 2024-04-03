@@ -1,5 +1,4 @@
-import {DomainEvent} from "../../src/domainEvent/DomainEvent";
-import {UuidFrom} from "../../src";
+import {DomainEvent, UuidFrom} from "../../src";
 import {FakeUserEvents} from "./FakeUserEvents";
 
 export class UpdateUsernameEvent implements DomainEvent {

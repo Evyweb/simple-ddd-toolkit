@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.3.0
+
+### Minor Changes
+
+- update imports and some boyscout rules
+
 ## 0.2.0
 
 ### Minor Changes

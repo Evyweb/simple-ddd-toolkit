@@ -1,4 +1,4 @@
-import {IResponse} from "../../src/query/IResponse";
+import {IResponse} from "../../src";
 
 export interface FakeResponse extends IResponse {
   upperCaseName: string;

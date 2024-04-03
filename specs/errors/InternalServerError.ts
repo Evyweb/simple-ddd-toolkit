@@ -1,4 +1,4 @@
-import {TechnicalError} from "../../src/errors/TechnicalError";
+import {TechnicalError} from "../../src";
 
 export class InternalServerError extends TechnicalError {
   errorName = 'InternalServerError';

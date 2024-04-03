@@ -1,4 +1,4 @@
-import {ICommand} from "../../src/command/ICommand";
+import {ICommand} from "../../src";
 
 export interface FakeCommand extends ICommand {
   name: string;

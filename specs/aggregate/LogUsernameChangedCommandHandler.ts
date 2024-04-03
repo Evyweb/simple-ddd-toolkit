@@ -1,4 +1,4 @@
-import { Logger } from '../../src/logger/Logger';
+import { Logger } from '../../src';
 import {ICommandHandler} from "../../src";
 import {LogUsernameChangedCommand} from "./LogUsernameChangedCommand";
 

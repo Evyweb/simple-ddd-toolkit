@@ -1,4 +1,4 @@
-import { UUID } from "../../src/valueObject/uuid/UUID";
+import { UUID } from "../../src";
 
 export interface FakeUserAggregateData {
   id: UUID;

@@ -1,4 +1,4 @@
-import {IQuery} from "../../src/query/IQuery";
+import {IQuery} from "../../src";
 
 export interface FakeQuery extends IQuery {
   name: string;

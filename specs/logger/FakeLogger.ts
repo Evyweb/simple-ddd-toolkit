@@ -1,4 +1,4 @@
-import { Logger } from '../../src/logger/Logger';
+import { Logger } from '../../src';
 
 export class FakeLogger implements Logger {
   public readonly messages: string[] = [];

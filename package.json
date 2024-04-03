@@ -10,7 +10,8 @@
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "jest --coverage",
-    "changeset": "npx changeset"
+    "changeset": "npx changeset",
+    "publish:package": "npm publish dist"
   },
   "keywords": [],
   "author": "Evyweb",

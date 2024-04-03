@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.4.0
+
+### Minor Changes
+
+- update publish scripts and registry
+
 ## 0.3.0
 
 ### Minor Changes

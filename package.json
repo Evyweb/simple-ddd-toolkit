@@ -12,7 +12,7 @@
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "lint": "tsc --noEmit",
     "test": "vitest run",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "vitest run --coverage",
     "changeset": "npx changeset",
     "changeset:version": "npx changeset version",
     "publish:package": "npx changeset publish"
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.24",
+    "@vitest/coverage-v8": "^1.5.3",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3",

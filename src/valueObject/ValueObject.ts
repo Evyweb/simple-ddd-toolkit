@@ -2,7 +2,7 @@ export abstract class ValueObject<ValueObjectData> {
   private readonly data: ValueObjectData;
 
   protected constructor(data: ValueObjectData) {
-    this.data = Object.freeze(data);
+    this.data = this.deepFreeze(data);
   }
 
   equals(other: ValueObject<ValueObjectData>): boolean {
@@ -35,5 +35,18 @@ export abstract class ValueObject<ValueObjectData> {
 
       return val1 === val2;
     });
+  }
+
+  private deepFreeze(object: any) {
+    const propNames = Object.getOwnPropertyNames(object);
+
+    propNames.forEach((name) => {
+      const property = object[name];
+      if (property && typeof property === 'object' && !Object.isFrozen(property)) {
+        this.deepFreeze(property);
+      }
+    });
+
+    return Object.freeze(object);
   }
 }

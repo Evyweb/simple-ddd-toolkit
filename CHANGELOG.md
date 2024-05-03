@@ -1,10 +1,16 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.6.0
+
+### Minor Changes
+
+- enforce value objects immutability
+
 ## 0.5.1
 
 ### Patch Changes
 
-- Fix result pattern issues
+- fix result pattern issues
 
 ## 0.5.0
 

@@ -8,12 +8,12 @@ describe('When a use case is executed', () => {
     // Arrange
     const presenter = new FakePresenter();
     const useCase = new FakeUseCase(presenter);
-    const command: FakeCommand = { type: 'FAKE_COMMAND_NAME', name: 'fakeName' };
+    const command: FakeCommand = { type: 'FAKE_COMMAND_NAME', name: 'Fake Name' };
 
     // Act
     await useCase.execute(command);
 
     // Assert
-    expect(presenter.viewModel.newName).toEqual('FAKENAME');
+    expect(presenter.viewModel.newName).toEqual('FAKE NAME');
   });
 });

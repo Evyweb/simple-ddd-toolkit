@@ -17,12 +17,12 @@ describe('[DomainError]', () => {
     expect(error.isDomainError()).toBe(true);
   });
 
-  it('should have a name', () => {
+  it('should have a tag name', () => {
     // Act
     const error = new AnyDomainError();
 
     // Assert
-    expect(error.errorName).toEqual('AnyDomainError');
+    expect(error.__TAG).toEqual('AnyDomainError');
   });
 
   it('should have a message', () => {

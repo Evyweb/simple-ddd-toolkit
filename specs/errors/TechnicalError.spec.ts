@@ -17,12 +17,12 @@ describe('[TechnicalError]', () => {
     expect(error.isTechnicalError()).toBe(true);
   });
 
-  it('should have a name', () => {
+  it('should have a tag name', () => {
     // Act
     const error = new InternalServerError();
 
     // Assert
-    expect(error.errorName).toEqual('InternalServerError');
+    expect(error.__TAG).toEqual('InternalServerError');
   });
 
   it('should have a message', () => {

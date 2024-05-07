@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.7.0
+
+### Minor Changes
+
+- add tag name to errors
+
 ## 0.6.1
 
 ### Patch Changes

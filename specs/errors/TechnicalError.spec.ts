@@ -22,7 +22,7 @@ describe('[TechnicalError]', () => {
     const error = new InternalServerError();
 
     // Assert
-    expect(error.__TAG).toEqual('InternalServerError');
+    expect(error.TAG_NAME).toEqual('InternalServerError');
   });
 
   it('should have a message', () => {

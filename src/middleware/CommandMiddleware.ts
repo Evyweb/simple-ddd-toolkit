@@ -1,5 +1,5 @@
-import {ICommand} from "../command/ICommand";
+import {Command} from "@/command/Command";
 
 export interface CommandMiddleware {
-  execute(command: ICommand, next: (command: ICommand) => Promise<void>): Promise<void>;
+    execute(command: Command, next: (command: Command) => Promise<void>): Promise<void>;
 }

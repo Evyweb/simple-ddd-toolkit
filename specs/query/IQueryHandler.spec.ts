@@ -1,17 +1,16 @@
-import {FakeQuery} from "./FakeQuery";
+import {FakeViewCurrentNameQuery} from "./FakeViewCurrentNameQuery";
 import {FakeQueryHandler} from "./FakeQueryHandler";
-import {describe, it, expect} from "vitest";
 
 describe('IQueryHandler', () => {
-  it('should correctly execute the query', async () => {
-    // Arrange
-    const query: FakeQuery = { type: 'VIEW_FAKE_NAME', name: 'Fake Name' };
-    const queryHandler = new FakeQueryHandler();
+    it('should correctly execute the query', async () => {
+        // Arrange
+        const query = new FakeViewCurrentNameQuery('Fake Name');
+        const queryHandler = new FakeQueryHandler();
 
-    // Act
-    const response = await queryHandler.handle(query);
+        // Act
+        const response = await queryHandler.handle(query);
 
-    // Assert
-    expect(response.upperCaseName).toEqual('FAKE NAME');
-  });
+        // Assert
+        expect(response.upperCaseName).toEqual('FAKE NAME');
+    });
 });

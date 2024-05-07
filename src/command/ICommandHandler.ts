@@ -1,5 +1,5 @@
-import {ICommand} from "./ICommand";
+import {Command} from "@/command/Command";
 
-export interface ICommandHandler<Command extends ICommand> {
-  handle(command: Command): Promise<void>;
+export interface ICommandHandler<TCommand extends Command> {
+  handle(command: TCommand): Promise<void>;
 }

@@ -1,6 +1,6 @@
 import {Command} from "@/command/Command";
 
-export class FakeCommand extends Command {
+export class FakeUpdateNameCommand extends Command {
     constructor(public readonly name: string) {
         super();
     }

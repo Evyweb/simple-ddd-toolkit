@@ -1,5 +1,4 @@
-import {Result} from "../../src";
-import {describe, it, expect} from "vitest";
+import {Result} from "@/result/Result";
 
 describe('Result', () => {
   describe('When an "ok" Result is created', () => {

@@ -1,4 +1,4 @@
-import {DomainError} from "../../src";
+import {DomainError} from "@/errors/DomainError";
 
 export class AnyDomainError extends DomainError {
   errorName = 'AnyDomainError';

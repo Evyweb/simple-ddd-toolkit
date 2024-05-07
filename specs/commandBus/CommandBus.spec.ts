@@ -1,8 +1,8 @@
-import {FakeCommand} from "./FakeCommand";
+import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
 import {FakeLogger} from "../logger/FakeLogger";
 import {FakeCommandHandler} from "./FakeCommandHandler";
-import {CommandBus, CommandLoggingMiddleware, ICommandHandler} from "../../src";
-import {beforeEach, describe, expect, it, vi} from "vitest";
+import {CommandBus} from "@/commandBus/CommandBus";
+import {CommandLoggingMiddleware} from "@/middleware/CommandLoggingMiddleware";
 
 describe('[CommandBus]', () => {
     beforeEach(() => {
@@ -12,16 +12,12 @@ describe('[CommandBus]', () => {
     describe('When the command has been registered', () => {
         it('should call the corresponding command handler', async () => {
             // Arrange
-            const UPDATE_NAME_COMMAND = 'UPDATE_NAME_COMMAND';
-            const command: FakeCommand = {type: UPDATE_NAME_COMMAND, name: 'NEW NAME'};
             const logger = new FakeLogger();
-            const commandHandler = new FakeCommandHandler(logger);
-
             const commandBus = new CommandBus();
-            commandBus.register<FakeCommand>(UPDATE_NAME_COMMAND, commandHandler);
+            commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
 
             // Act
-            await commandBus.execute(command);
+            await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
 
             // Assert
             expect(logger.messages).toHaveLength(1);
@@ -32,11 +28,10 @@ describe('[CommandBus]', () => {
     describe('When the command has not been registered', () => {
         it('should throw an error', () => {
             // Arrange
-            const UPDATE_NAME_COMMAND = 'UPDATE_NAME_COMMAND';
-            const command: FakeCommand = {type: UPDATE_NAME_COMMAND, name: 'NEW NAME'};
+            const command = new FakeUpdateNameCommand('NEW NAME');
             const commandBus = new CommandBus();
 
-            const errorMessage = `No handler registered for command type ${command.type}`;
+            const errorMessage = `No handler registered for command type ${command.__TAG}`;
 
             // Act & Assert
             expect(() => commandBus.execute(command)).rejects.toThrow(errorMessage);
@@ -46,13 +41,10 @@ describe('[CommandBus]', () => {
     describe('When the command bus has middlewares', () => {
         it('should pass through the middlewares when executing the command', async () => {
             // Arrange
-            const UPDATE_NAME_COMMAND = 'UPDATE_NAME_COMMAND';
-            const command: FakeCommand = {type: UPDATE_NAME_COMMAND, name: 'NEW NAME'};
+            const command = new FakeUpdateNameCommand('NEW NAME');
             const logger = new FakeLogger();
-            const commandHandler: ICommandHandler<FakeCommand> = new FakeCommandHandler(logger);
-
             const commandBus = new CommandBus();
-            commandBus.register<FakeCommand>(UPDATE_NAME_COMMAND, commandHandler);
+            commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
 
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 1'));
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 2'));
@@ -63,10 +55,10 @@ describe('[CommandBus]', () => {
             // Assert
             expect(logger.messages).toHaveLength(3);
             expect(logger.messages[0]).toEqual(
-                '[2024-02-01T00:00:00.000Z][Middleware 1][UPDATE_NAME_COMMAND] - {"type":"UPDATE_NAME_COMMAND","name":"NEW NAME"}'
+                '[2024-02-01T00:00:00.000Z][Middleware 1][FakeUpdateNameCommand] - {"__TAG":"FakeUpdateNameCommand","name":"NEW NAME"}'
             );
             expect(logger.messages[1]).toEqual(
-                '[2024-02-01T00:00:00.000Z][Middleware 2][UPDATE_NAME_COMMAND] - {"type":"UPDATE_NAME_COMMAND","name":"NEW NAME"}'
+                '[2024-02-01T00:00:00.000Z][Middleware 2][FakeUpdateNameCommand] - {"__TAG":"FakeUpdateNameCommand","name":"NEW NAME"}'
             );
             expect(logger.messages[2]).toEqual('NEW NAME');
         });

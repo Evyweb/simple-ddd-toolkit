@@ -1,7 +1,6 @@
-import {UuidFrom} from "../../src";
 import {FakeUserEntity} from "./FakeUserEntity";
-import {UUID} from "../../src";
-import {describe, it, expect} from "vitest";
+import {UuidFrom} from "@/valueObject/uuid/UUIDFactory";
+import {UUID} from "@/valueObject/uuid/UUID";
 
 describe('Entity', () => {
   describe('When an entity is created', () => {

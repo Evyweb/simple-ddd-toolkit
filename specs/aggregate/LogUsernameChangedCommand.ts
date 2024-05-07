@@ -1,6 +1,10 @@
-import {ICommand} from "../../src";
+import {Command} from "@/command/Command";
 
-export interface LogUsernameChangedCommand extends ICommand {
-  userId: string;
-  newName: string;
+export class LogUsernameChangedCommand extends Command {
+    constructor(
+        public readonly userId: string,
+        public readonly newName: string
+    ) {
+        super();
+    }
 }

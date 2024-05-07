@@ -1,6 +1,5 @@
 import {Money} from "./Money";
 import {SomeInformation} from "./SomeInformation";
-import {describe, expect, it} from "vitest";
 
 describe('[ValueObject]', () => {
     describe('When 2 value objects have same values', () => {

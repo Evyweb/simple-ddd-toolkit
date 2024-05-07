@@ -1,5 +1,5 @@
 export * from './aggregate/Aggregate';
-export * from './command/ICommand';
+export * from './command/Command';
 export * from './command/ICommandHandler';
 export * from './commandBus/CommandBus';
 export * from './domainEvent/DomainEvent';
@@ -14,7 +14,7 @@ export * from './middleware/CommandMiddleware';
 export * from './middleware/QueryMiddleware';
 export * from './middleware/CommandLoggingMiddleware';
 export * from './middleware/QueryLoggingMiddleware';
-export * from './query/IQuery';
+export * from './query/Query';
 export * from './query/IResponse';
 export * from './query/IQueryHandler';
 export * from './queryBus/QueryBus';

@@ -1,7 +1,7 @@
-import {Aggregate} from "../../src";
 import {FakeUserAggregateData} from "./FakeUserAggregateData";
 import {FakeUserData} from "../entity/FakeUserData";
 import {UpdateUsernameEvent} from "./UpdateUsernameEvent";
+import {Aggregate} from "@/aggregate/Aggregate";
 
 export class FakeUserAggregate extends Aggregate<FakeUserAggregateData> {
   static create(fakeUserData: FakeUserData): FakeUserAggregate {

@@ -1,9 +1,9 @@
+import {EventBus} from "@/eventBus/EventBus";
+import {UuidFrom} from "@/valueObject/uuid/UUIDFactory";
 import {FakeLogger} from "../logger/FakeLogger";
-import {EventBus, UuidFrom} from "../../src";
 import {LogUsernameChangedCommandHandler} from "./LogUsernameChangedCommandHandler";
 import {FakeUserEvents} from "./FakeUserEvents";
 import {FakeUserAggregate} from "./FakeUserAggregate";
-import {describe, expect, it} from "vitest";
 
 describe('When dispatchEvents is called', () => {
     describe('When a handler has been registered', () => {

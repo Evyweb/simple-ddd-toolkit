@@ -1,6 +1,6 @@
-import {Entity} from "../entity/Entity";
-import {DomainEvent} from "../domainEvent/DomainEvent";
-import {EventBus} from "../eventBus/EventBus";
+import {Entity} from "@/entity/Entity";
+import {DomainEvent} from "@/domainEvent/DomainEvent";
+import {EventBus} from "@/eventBus/EventBus";
 
 export abstract class Aggregate<EntityData extends { id: any }> extends Entity<EntityData> {
   private domainEvents: DomainEvent[] = [];

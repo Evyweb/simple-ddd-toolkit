@@ -1,5 +1,4 @@
 import {InternalServerError} from "./InternalServerError";
-import {describe, it, expect} from "vitest";
 
 describe('[TechnicalError]', () => {
   it('should not be identified as a domain error', () => {

@@ -1,4 +1,4 @@
-import { UUID } from '../valueObject/uuid/UUID';
+import { UUID } from '@/valueObject/uuid/UUID';
 
 export abstract class Entity<EntityData extends { id: UUID }> {
   private readonly data: EntityData;

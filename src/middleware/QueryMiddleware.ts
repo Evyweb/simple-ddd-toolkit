@@ -1,6 +1,6 @@
-import {IQuery} from "../query/IQuery";
-import {IResponse} from "../query/IResponse";
+import {IResponse} from "@/query/IResponse";
+import {Query} from "@/query/Query";
 
 export interface QueryMiddleware {
-  execute(query: IQuery, next: (query: IQuery) => Promise<IResponse>): Promise<IResponse>;
+    execute(query: Query, next: (query: Query) => Promise<IResponse>): Promise<IResponse>;
 }

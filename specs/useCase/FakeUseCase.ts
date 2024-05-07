@@ -1,6 +1,6 @@
-import {IUseCase} from "../../src";
 import {FakeRequest} from "./FakeRequest";
 import {FakePresenterPort} from "./FakePresenterPort";
+import {IUseCase} from "@/useCase/IUseCase";
 
 export class FakeUseCase implements IUseCase<FakeRequest> {
   constructor(private readonly presenter: FakePresenterPort) {}

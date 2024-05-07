@@ -1,11 +1,11 @@
-import {ICommandHandler} from "../../src";
-import {FakeCommand} from "./FakeCommand";
+import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
 import {FakeLogger} from "../logger/FakeLogger";
+import {ICommandHandler} from "@/command/ICommandHandler";
 
-export class FakeCommandHandler implements ICommandHandler<FakeCommand> {
+export class FakeCommandHandler implements ICommandHandler<FakeUpdateNameCommand> {
   constructor(private readonly logger: FakeLogger) {}
 
-  async handle(command: FakeCommand): Promise<void> {
+  async handle(command: FakeUpdateNameCommand): Promise<void> {
     this.logger.log(command.name);
   }
 }

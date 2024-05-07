@@ -1,5 +1,4 @@
 import {AnyDomainError} from "./AnyDomainError";
-import {describe, it, expect} from "vitest";
 
 describe('[DomainError]', () => {
   it('should not be identified as a technical error', () => {

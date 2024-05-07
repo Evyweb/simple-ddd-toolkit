@@ -1,6 +1,7 @@
-import { Logger } from '../../src';
-import {ICommandHandler} from "../../src";
+
 import {LogUsernameChangedCommand} from "./LogUsernameChangedCommand";
+import {Logger} from "@/logger/Logger";
+import {ICommandHandler} from "@/command/ICommandHandler";
 
 export class LogUsernameChangedCommandHandler implements ICommandHandler<LogUsernameChangedCommand> {
   constructor(private readonly logger: Logger) {}

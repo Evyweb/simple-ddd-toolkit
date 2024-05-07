@@ -1,4 +1,4 @@
-import {ValueObject} from "../../src";
+import {ValueObject} from "@/valueObject/ValueObject";
 
 interface SomeInformationData {
   name: string;

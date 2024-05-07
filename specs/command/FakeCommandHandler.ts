@@ -1,5 +1,6 @@
-import {ICommandHandler, Logger} from "../../src";
 import {FakeCommand} from "./FakeCommand";
+import {ICommandHandler} from "@/command/ICommandHandler";
+import {Logger} from "@/logger/Logger";
 
 export class FakeCommandHandler implements ICommandHandler<FakeCommand> {
   constructor(private readonly logger: Logger) {}

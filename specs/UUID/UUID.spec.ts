@@ -1,5 +1,5 @@
-import {Uuid, UUID, UuidFrom} from "../../src";
-import {describe, it, expect} from "vitest";
+import {Uuid, UuidFrom} from "@/valueObject/uuid/UUIDFactory";
+import {UUID} from "@/valueObject/uuid/UUID";
 
 describe('UUID', () => {
   it('should be able to create a valid UUID', () => {

@@ -1,5 +1,5 @@
-import {Logger} from "../logger/Logger";
-import {DomainEvent} from "../domainEvent/DomainEvent";
+import {Logger} from "@/logger/Logger";
+import {DomainEvent} from "@/domainEvent/DomainEvent";
 
 export interface EventBusPort {
   readonly logger: Logger;

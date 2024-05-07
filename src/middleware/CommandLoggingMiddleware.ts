@@ -1,6 +1,6 @@
 import {CommandMiddleware} from "./CommandMiddleware";
-import {Logger} from "../logger/Logger";
-import {ICommand} from "../command/ICommand";
+import {Logger} from "@/logger/Logger";
+import {Command} from "@/command/Command";
 
 export class CommandLoggingMiddleware implements CommandMiddleware {
   constructor(
@@ -8,9 +8,9 @@ export class CommandLoggingMiddleware implements CommandMiddleware {
     private readonly middlewareId: string
   ) {}
 
-  async execute(command: ICommand, next: (command: ICommand) => Promise<void>): Promise<void> {
+  async execute(command: Command, next: (command: Command) => Promise<void>): Promise<void> {
     const date = new Date().toISOString();
-    this.logger.log(`[${date}][${this.middlewareId}][${command.type}] - ${JSON.stringify(command)}`);
+    this.logger.log(`[${date}][${this.middlewareId}][${command.__TAG}] - ${JSON.stringify(command)}`);
     await next(command);
   }
 }

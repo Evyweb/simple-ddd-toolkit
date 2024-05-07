@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl" : "./",
     "allowJs": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -7,13 +8,17 @@
     "isolatedModules": true,
     "module": "ESNext",
     "moduleDetection": "force",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "es2022",
+    "types": ["vitest/globals"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*.ts",

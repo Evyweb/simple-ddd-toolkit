@@ -1,6 +1,6 @@
 import {EventBusPort} from "./EventBusPort";
-import {Logger} from "../logger/Logger";
-import {DomainEvent} from "../domainEvent/DomainEvent";
+import {Logger} from "@/logger/Logger";
+import {DomainEvent} from "@/domainEvent/DomainEvent";
 
 export class EventBus implements EventBusPort {
   constructor(readonly logger: Logger) {}

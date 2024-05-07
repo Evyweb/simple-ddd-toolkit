@@ -4,7 +4,8 @@ import * as path from "node:path";
 export default defineConfig({
     test: {
         coverage: {
-            provider: 'v8'
+            provider: 'v8',
+            exclude: ["specs/**/*", "**/index.ts"]
         },
         globals: true,
     },

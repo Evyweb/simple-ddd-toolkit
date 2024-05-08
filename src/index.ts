@@ -7,7 +7,6 @@ export * from './entity/Entity';
 export * from './errors/CustomError';
 export * from './errors/DomainError';
 export * from './errors/TechnicalError';
-export * from './eventBus/EventBusPort';
 export * from './eventBus/EventBus';
 export * from './logger/Logger';
 export * from './middleware/CommandMiddleware';

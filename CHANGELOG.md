@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.8.0
+
+### Minor Changes
+
+- simplify event creation
+
 ## 0.7.0
 
 ### Minor Changes

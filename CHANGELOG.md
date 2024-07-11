@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.9.0
+
+### Minor Changes
+
+- commands can now have an optional returned value
+
 ## 0.8.1
 
 ### Patch Changes

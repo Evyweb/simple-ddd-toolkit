@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.11.1
+
+### Patch Changes
+
+- fix domain events logs display
+
 ## 0.11.0
 
 ### Minor Changes

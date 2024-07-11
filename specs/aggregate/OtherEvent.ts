@@ -1,4 +1,10 @@
 import {DomainEvent} from "@/domainEvent/DomainEvent";
 
-export class OtherEvent extends DomainEvent {
+namespace OtherEvent {
+    export interface Metadata {
+        otherField: string;
+    }
+}
+
+export class OtherEvent extends DomainEvent<OtherEvent.Metadata> {
 }

@@ -4,9 +4,9 @@ import {EventBus} from "@/eventBus/EventBus";
 import {UUID} from "@/valueObject/uuid/UUID";
 
 export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<EntityData> {
-  private domainEvents: DomainEvent[] = [];
+  private domainEvents: DomainEvent<Record<string, any>>[] = [];
 
-  addEvent(domainEvent: DomainEvent): void {
+  addEvent(domainEvent: DomainEvent<Record<string, any>>): void {
     this.domainEvents.push(domainEvent);
   }
 
@@ -14,10 +14,10 @@ export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<
     this.domainEvents = [];
   }
 
-  dispatchEvents(bus: EventBus): void {
-    this.domainEvents.forEach((event) => {
-      bus.dispatch(event);
-    });
+  async dispatchEvents(bus: EventBus): Promise<void> {
+    for (const event of this.domainEvents) {
+      await bus.dispatch(event);
+    }
 
     this.clearEvents();
   }

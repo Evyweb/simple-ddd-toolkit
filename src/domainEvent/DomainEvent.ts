@@ -9,16 +9,16 @@ namespace DomainEvent {
     }
 }
 
-export abstract class DomainEvent {
+export abstract class DomainEvent<Metadata extends Record<string, any>> {
     public readonly eventId: string;
     public readonly eventType: string;
     public readonly occurredOn: Date;
-    public readonly metadata: Record<string, any>;
+    public readonly metadata: Metadata;
 
     public constructor(eventData?: Partial<DomainEvent.Data>) {
         this.eventId = eventData?.eventId || Uuid().get('value');
         this.eventType = eventData?.eventType || this.constructor.name;
         this.occurredOn = eventData?.occurredOn || new Date();
-        this.metadata = eventData?.metadata || {};
+        this.metadata = eventData?.metadata as Metadata || {} as Metadata;
     }
 }

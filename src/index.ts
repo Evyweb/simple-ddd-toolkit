@@ -3,6 +3,7 @@ export * from './command/Command';
 export * from './command/ICommandHandler';
 export * from './commandBus/CommandBus';
 export * from './domainEvent/DomainEvent';
+export * from './domainEvent/IEventHandler';
 export * from './entity/Entity';
 export * from './errors/CustomError';
 export * from './errors/DomainError';

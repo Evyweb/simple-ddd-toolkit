@@ -21,12 +21,13 @@ export class EventBus implements EventBusPort {
 
     if (!handlers) return;
 
+    this.logger.log(
+        `[${domainEvent.occurredOn.toISOString()}] Event "${domainEvent.eventType}" occurred with ID "${
+            domainEvent.eventId
+        }". Metadata: ${JSON.stringify(domainEvent.metadata)}`
+    );
+
     for (const handler of handlers) {
-      this.logger.log(
-          `[${domainEvent.occurredOn.toISOString()}] Event "${domainEvent.eventType}" occurred with ID "${
-              domainEvent.eventId
-          }". Metadata: ${JSON.stringify(domainEvent.metadata)}`
-      );
       await handler.handle(domainEvent);
     }
   }

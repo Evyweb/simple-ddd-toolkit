@@ -1,9 +1,10 @@
-import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
 import {FakeLogger} from "../logger/FakeLogger";
-import {FakeCommandHandler} from "./FakeCommandHandler";
+import {FakeUpdateNameCommandHandler} from "./FakeUpdateNameCommandHandler";
 import {CommandBus} from "@/commandBus/CommandBus";
 import {CommandLoggingMiddleware} from "@/middleware/CommandLoggingMiddleware";
-import {FakeCommandHandlerWithReturnedValue} from "./FakeCommandHandlerWithReturnedValue";
+import {FakeUpdateNameWithReturnedValueCommandHandler} from "./FakeUpdateNameWithReturnedValueCommandHandler";
+import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
+import {FakeUpdateNameWithReturnedValueCommand} from "./FakeUpdateNameWithReturnedValueCommand";
 
 describe('[CommandBus]', () => {
     beforeEach(() => {
@@ -15,7 +16,7 @@ describe('[CommandBus]', () => {
             // Arrange
             const logger = new FakeLogger();
             const commandBus = new CommandBus();
-            commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
+            commandBus.register(new FakeUpdateNameCommandHandler(logger));
 
             // Act
             await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -30,7 +31,7 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new CommandBus();
-                commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
+                commandBus.register(new FakeUpdateNameCommandHandler(logger));
 
                 // Act
                 const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -44,10 +45,10 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new CommandBus();
-                commandBus.register('FakeUpdateNameCommand', new FakeCommandHandlerWithReturnedValue(logger));
+                commandBus.register(new FakeUpdateNameWithReturnedValueCommandHandler(logger));
 
                 // Act
-                const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
+                const result = await commandBus.execute(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
 
                 // Assert
                 expect(result).toEqual('NEW NAME');
@@ -74,7 +75,7 @@ describe('[CommandBus]', () => {
             const command = new FakeUpdateNameCommand('NEW NAME');
             const logger = new FakeLogger();
             const commandBus = new CommandBus();
-            commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
+            commandBus.register(new FakeUpdateNameCommandHandler(logger));
 
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 1'));
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 2'));

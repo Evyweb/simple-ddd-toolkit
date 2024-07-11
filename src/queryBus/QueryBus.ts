@@ -6,11 +6,8 @@ import {Query} from "@/query/Query";
 export class QueryBus {
     private handlers: Map<string, IQueryHandler<Query, any>> = new Map();
 
-    register<Response extends IResponse>(
-        queryType: string,
-        handler: IQueryHandler<Query, Response>
-    ): void {
-        this.handlers.set(queryType, handler as IQueryHandler<Query, Response>);
+    register<Response extends IResponse>(handler: IQueryHandler<Query, Response>): void {
+        this.handlers.set(handler.constructor.name, handler as IQueryHandler<Query, Response>);
     }
 
     private middlewares: QueryMiddleware[] = [];
@@ -20,10 +17,11 @@ export class QueryBus {
     }
 
     async execute<Response extends IResponse>(query: Query): Promise<Response> {
-        const handler = this.handlers.get(query.__TAG);
+        const handlerName = `${query.__TAG}Handler`;
+        const handler = this.handlers.get(handlerName);
 
         if (!handler) {
-            throw new Error(`No handler registered for query type ${query.__TAG}`);
+            throw new Error(`No handler registered for query type ${handlerName}`);
         }
 
         const executeHandler = (finalQuery: Query) => handler.handle(finalQuery) as Promise<IResponse>;

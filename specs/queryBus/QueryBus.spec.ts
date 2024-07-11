@@ -1,5 +1,5 @@
 import {FakeViewCurrentNameQuery} from "../query/FakeViewCurrentNameQuery";
-import {FakeQueryHandler} from "../query/FakeQueryHandler";
+import {FakeViewCurrentNameQueryHandler} from "../query/FakeViewCurrentNameQueryHandler";
 import {FakeResponse} from "../query/FakeResponse";
 import {FakeLogger} from "../logger/FakeLogger";
 import {QueryBus} from "@/queryBus/QueryBus";
@@ -16,7 +16,7 @@ describe('[QueryBus]', () => {
             const queryBus = new QueryBus();
             const query = new FakeViewCurrentNameQuery('Current name');
 
-            queryBus.register('FakeViewCurrentNameQuery', new FakeQueryHandler());
+            queryBus.register(new FakeViewCurrentNameQueryHandler());
 
             // Act
             const response = await queryBus.execute<FakeResponse>(query);
@@ -44,7 +44,7 @@ describe('[QueryBus]', () => {
             const logger = new FakeLogger();
             const query = new FakeViewCurrentNameQuery('Current name');
 
-            queryBus.register('FakeViewCurrentNameQuery', new FakeQueryHandler());
+            queryBus.register(new FakeViewCurrentNameQueryHandler());
 
             queryBus.use(new QueryLoggingMiddleware(logger, 'Middleware 1'));
             queryBus.use(new QueryLoggingMiddleware(logger, 'Middleware 2'));

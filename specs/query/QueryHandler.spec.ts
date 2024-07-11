@@ -1,11 +1,11 @@
 import {FakeViewCurrentNameQuery} from "./FakeViewCurrentNameQuery";
-import {FakeQueryHandler} from "./FakeQueryHandler";
+import {FakeViewCurrentNameQueryHandler} from "./FakeViewCurrentNameQueryHandler";
 
 describe('IQueryHandler', () => {
     it('should correctly execute the query', async () => {
         // Arrange
         const query = new FakeViewCurrentNameQuery('Fake Name');
-        const queryHandler = new FakeQueryHandler();
+        const queryHandler = new FakeViewCurrentNameQueryHandler();
 
         // Act
         const response = await queryHandler.handle(query);

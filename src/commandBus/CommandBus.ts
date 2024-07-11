@@ -5,8 +5,8 @@ import {Command} from "@/command/Command";
 export class CommandBus {
     private handlers: Map<string, ICommandHandler<Command, any>> = new Map();
 
-    register<Response>(commandType: string, handler: ICommandHandler<Command, Response>): void {
-        this.handlers.set(commandType, handler as ICommandHandler<Command, Response>);
+    register<Response>(handler: ICommandHandler<Command, Response>): void {
+        this.handlers.set(handler.constructor.name, handler as ICommandHandler<Command, Response>);
     }
 
     private middlewares: CommandMiddleware[] = [];
@@ -16,10 +16,11 @@ export class CommandBus {
     }
 
     async execute<Response>(command: Command): Promise<Response> {
-        const handler = this.handlers.get(command.__TAG);
+        const handlerName = `${command.__TAG}Handler`;
+        const handler = this.handlers.get(handlerName);
 
         if (!handler) {
-            throw new Error(`No handler registered for command type ${command.__TAG}`);
+            throw new Error(`No handler registered for command type ${handlerName}`);
         }
 
         const executeHandler = (finalCommand: Command) => handler.handle(finalCommand) as Promise<Response>;

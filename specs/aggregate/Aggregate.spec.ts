@@ -53,7 +53,7 @@ describe('When dispatchEvents is called', () => {
                 name: 'John Doe',
             });
 
-            aggregate.updateName('Jane Doe');
+            aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'Jane Doe'));
 
             // Act
             aggregate.dispatchEvents(eventBus);

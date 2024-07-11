@@ -3,6 +3,7 @@ import {FakeLogger} from "../logger/FakeLogger";
 import {FakeCommandHandler} from "./FakeCommandHandler";
 import {CommandBus} from "@/commandBus/CommandBus";
 import {CommandLoggingMiddleware} from "@/middleware/CommandLoggingMiddleware";
+import {FakeCommandHandlerWithReturnedValue} from "./FakeCommandHandlerWithReturnedValue";
 
 describe('[CommandBus]', () => {
     beforeEach(() => {
@@ -22,6 +23,35 @@ describe('[CommandBus]', () => {
             // Assert
             expect(logger.messages).toHaveLength(1);
             expect(logger.messages[0]).toBe('NEW NAME');
+        });
+
+        describe('When the command does not return a value', () => {
+            it('should not return any value', async () => {
+                // Arrange
+                const logger = new FakeLogger();
+                const commandBus = new CommandBus();
+                commandBus.register('FakeUpdateNameCommand', new FakeCommandHandler(logger));
+
+                // Act
+                const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
+
+                // Assert
+                expect(result).toBeUndefined();
+            });
+        });
+        describe('When the command returns a value', () => {
+            it('should return the correct value', async () => {
+                // Arrange
+                const logger = new FakeLogger();
+                const commandBus = new CommandBus();
+                commandBus.register('FakeUpdateNameCommand', new FakeCommandHandlerWithReturnedValue(logger));
+
+                // Act
+                const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
+
+                // Assert
+                expect(result).toEqual('NEW NAME');
+            });
         });
     });
 

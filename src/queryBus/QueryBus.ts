@@ -4,7 +4,7 @@ import {QueryMiddleware} from "@/middleware/QueryMiddleware";
 import {Query} from "@/query/Query";
 
 export class QueryBus {
-    private handlers: Map<string, IQueryHandler<any, any>> = new Map();
+    private handlers: Map<string, IQueryHandler<Query, any>> = new Map();
 
     register<Response extends IResponse>(
         queryType: string,
@@ -22,10 +22,8 @@ export class QueryBus {
     async execute<Response extends IResponse>(query: Query): Promise<Response> {
         const handler = this.handlers.get(query.__TAG);
 
-        const NO_HANDLER_ERROR_MESSAGE = `No handler registered for query type ${query.__TAG}`;
-
         if (!handler) {
-            throw new Error(NO_HANDLER_ERROR_MESSAGE);
+            throw new Error(`No handler registered for query type ${query.__TAG}`);
         }
 
         const executeHandler = (finalQuery: Query) => handler.handle(finalQuery) as Promise<IResponse>;

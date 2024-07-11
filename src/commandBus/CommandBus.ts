@@ -3,10 +3,10 @@ import {CommandMiddleware} from "@/middleware/CommandMiddleware";
 import {Command} from "@/command/Command";
 
 export class CommandBus {
-    private handlers: Map<string, ICommandHandler<Command>> = new Map();
+    private handlers: Map<string, ICommandHandler<Command, any>> = new Map();
 
-    register(commandType: string, handler: ICommandHandler<Command>): void {
-        this.handlers.set(commandType, handler);
+    register<Response>(commandType: string, handler: ICommandHandler<Command, Response>): void {
+        this.handlers.set(commandType, handler as ICommandHandler<Command, Response>);
     }
 
     private middlewares: CommandMiddleware[] = [];
@@ -15,20 +15,22 @@ export class CommandBus {
         this.middlewares.push(middleware);
     }
 
-    async execute(command: Command): Promise<void> {
+    async execute<Response>(command: Command): Promise<Response> {
         const handler = this.handlers.get(command.__TAG);
 
         if (!handler) {
             throw new Error(`No handler registered for command type ${command.__TAG}`);
         }
 
-        const middlewareChain = this.middlewares.reduceRight(
-            (next, middleware) => (currentCommand: Command) => middleware.execute(currentCommand, next),
-            async (finalCommand: Command) => {
-                await handler.handle(finalCommand);
-            }
+        const executeHandler = (finalCommand: Command) => handler.handle(finalCommand) as Promise<Response>;
+
+        const executeMiddlewares = (next: any, middleware: any) => middleware.execute.bind(middleware, command, next);
+
+        const middlewareChain: (command: Command) => Promise<Response> = this.middlewares.reduceRight(
+            executeMiddlewares,
+            executeHandler
         );
 
-        await middlewareChain(command);
+        return (await middlewareChain(command)) as Response;
     }
 }

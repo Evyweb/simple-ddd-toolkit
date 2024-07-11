@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.11.0
+
+### Minor Changes
+
+- add event handlers
+
 ## 0.10.0
 
 ### Minor Changes

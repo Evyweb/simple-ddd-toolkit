@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.8.1
+
+### Patch Changes
+
+- add missing type for aggregate id
+
 ## 0.8.0
 
 ### Minor Changes

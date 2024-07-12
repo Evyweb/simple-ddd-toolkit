@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.11.2
+
+### Patch Changes
+
+- fix command loggin middleware
+
 ## 0.11.1
 
 ### Patch Changes

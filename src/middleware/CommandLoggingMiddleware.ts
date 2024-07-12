@@ -8,9 +8,9 @@ export class CommandLoggingMiddleware implements CommandMiddleware {
     private readonly middlewareId: string
   ) {}
 
-  async execute(command: Command, next: (command: Command) => Promise<void>): Promise<void> {
+  async execute<Response>(command: Command, next: (command: Command) => Promise<Response>): Promise<Response> {
     const date = new Date().toISOString();
     this.logger.log(`[${date}][${this.middlewareId}][${command.__TAG}] - ${JSON.stringify(command)}`);
-    await next(command);
+    return next(command);
   }
 }

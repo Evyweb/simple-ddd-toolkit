@@ -40,18 +40,20 @@ describe('[CommandBus]', () => {
                 expect(result).toBeUndefined();
             });
         });
+
         describe('When the command returns a value', () => {
             it('should return the correct value', async () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new CommandBus();
+                commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware'));
                 commandBus.register(new FakeUpdateNameWithReturnedValueCommandHandler(logger));
 
                 // Act
-                const result = await commandBus.execute(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
+                const result = await commandBus.execute<string>(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
 
                 // Assert
-                expect(result).toEqual('NEW NAME');
+                expect(result).toEqual<string>('NEW NAME');
             });
         });
     });

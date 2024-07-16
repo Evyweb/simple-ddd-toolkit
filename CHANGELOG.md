@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.12.1
+
+### Patch Changes
+
+- fix returned instance on rebind
+
 ## 0.12.0
 
 ### Minor Changes

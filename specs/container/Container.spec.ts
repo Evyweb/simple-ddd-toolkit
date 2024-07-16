@@ -46,4 +46,30 @@ describe('Container', () => {
             expect(() => container.get('unknown')).toThrowError('No binding found for unknown');
         });
     });
+
+    describe('When a dependency already exist but a new one in bind', () => {
+        it('should return the new one', () => {
+            // Arrange
+            const container = new Container();
+            container.bind('fake', () => {
+                return {
+                    test: 'test1'
+                };
+            });
+            container.get('fake');
+            container.bind('fake', () => {
+                return {
+                    test: 'test2'
+                };
+            });
+
+            // Act
+            container.get('fake');
+
+            // Assert
+            expect(container.get('fake')).toEqual({
+                test: 'test2'
+            });
+        });
+    });
 });

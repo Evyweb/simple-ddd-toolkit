@@ -6,6 +6,7 @@ export class Container {
 
     public bind<T extends AnyFunction>(name: string, factory: T): void {
         this.bindings.set(name, factory as AnyFunction);
+        this.instances.delete(name);
     }
 
     public get<T>(name: string): T {

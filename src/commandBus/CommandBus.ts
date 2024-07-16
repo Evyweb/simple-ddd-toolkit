@@ -1,8 +1,9 @@
 import {ICommandHandler} from "@/command/ICommandHandler";
 import {CommandMiddleware} from "@/middleware/CommandMiddleware";
 import {Command} from "@/command/Command";
+import {CommandBusPort} from "@/commandBus/CommandBusPort";
 
-export class CommandBus {
+export class CommandBus implements CommandBusPort {
     private handlers: Map<string, ICommandHandler<Command, any>> = new Map();
 
     register<Response>(handler: ICommandHandler<Command, Response>): void {

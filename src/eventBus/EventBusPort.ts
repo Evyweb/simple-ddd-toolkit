@@ -8,5 +8,5 @@ export interface EventBusPort {
 
   on(eventType: string, handler: IEventHandler<DomainEvent<Record<string, any>>>): void;
 
-  dispatch(domainEvent: DomainEvent<Record<string, any>>): void;
+  dispatch(domainEvent: DomainEvent<Record<string, any>>): Promise<void>;
 }

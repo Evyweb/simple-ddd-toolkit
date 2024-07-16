@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.13.0
+
+### Minor Changes
+
+- remove containers
+
 ## 0.12.1
 
 ### Patch Changes

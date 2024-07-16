@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.12.0
+
+### Minor Changes
+
+- add container to manage dependencies
+
 ## 0.11.2
 
 ### Patch Changes

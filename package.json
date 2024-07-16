@@ -1,6 +1,6 @@
 {
   "name": "@evyweb/simple-ddd-toolkit",
-  "version": "0.11.2",
+  "version": "0.12.0",
   "description": "A simple Typescript Domain Driven Design Toolkit to help you create your aggregates, domain events, command handlers and other stuff.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

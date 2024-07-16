@@ -29,3 +29,4 @@ npm install --save @evyweb/simple-ddd-toolkit
 - [x] Result
 - [x] Use case
 - [x] Value object
+- [x] Container

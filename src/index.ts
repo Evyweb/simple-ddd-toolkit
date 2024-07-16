@@ -24,3 +24,4 @@ export * from './valueObject/ValueObject';
 export * from './valueObject/uuid/UUIDData';
 export * from './valueObject/uuid/UUID';
 export * from './valueObject/uuid/UUIDFactory';
+export * from './container/Container';

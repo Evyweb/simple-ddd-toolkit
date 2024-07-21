@@ -3,6 +3,9 @@ import {FakeLogger} from "../logger/FakeLogger";
 import {ICommandHandler} from "@/command/ICommandHandler";
 
 export class FakeUpdateNameWithReturnedValueCommandHandler implements ICommandHandler<FakeUpdateNameCommand, string> {
+
+  readonly __TAG = 'FakeUpdateNameWithReturnedValueCommandHandler';
+
   constructor(private readonly logger: FakeLogger) {}
 
   async handle(command: FakeUpdateNameCommand): Promise<string> {

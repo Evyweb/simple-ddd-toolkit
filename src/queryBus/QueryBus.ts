@@ -7,7 +7,7 @@ export class QueryBus {
     private handlers: Map<string, IQueryHandler<Query, any>> = new Map();
 
     register<Response extends IResponse>(handler: IQueryHandler<Query, Response>): void {
-        this.handlers.set(handler.constructor.name, handler as IQueryHandler<Query, Response>);
+        this.handlers.set(handler.__TAG, handler as IQueryHandler<Query, Response>);
     }
 
     private middlewares: QueryMiddleware[] = [];

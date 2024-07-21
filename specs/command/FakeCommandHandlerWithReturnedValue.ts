@@ -3,6 +3,9 @@ import {ICommandHandler} from "@/command/ICommandHandler";
 import {Logger} from "@/logger/Logger";
 
 export class FakeCommandHandlerWithReturnedValue implements ICommandHandler<FakeCommand, boolean> {
+
+    readonly __TAG = 'FakeCommandHandlerWithReturnedValue';
+
     constructor(private readonly logger: Logger) {
     }
 

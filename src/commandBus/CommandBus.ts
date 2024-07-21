@@ -7,7 +7,7 @@ export class CommandBus implements CommandBusPort {
     private handlers: Map<string, ICommandHandler<Command, any>> = new Map();
 
     register<Response>(handler: ICommandHandler<Command, Response>): void {
-        this.handlers.set(handler.constructor.name, handler as ICommandHandler<Command, Response>);
+        this.handlers.set(handler.__TAG, handler as ICommandHandler<Command, Response>);
     }
 
     private middlewares: CommandMiddleware[] = [];

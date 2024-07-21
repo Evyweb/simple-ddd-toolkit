@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.13.2
+
+### Patch Changes
+
+- add missing tags
+
 ## 0.13.1
 
 ### Patch Changes

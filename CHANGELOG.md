@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.14.0
+
+### Minor Changes
+
+- add dispatch events on event bus
+
 ## 0.13.2
 
 ### Patch Changes

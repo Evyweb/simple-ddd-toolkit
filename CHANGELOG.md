@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.14.1
+
+### Patch Changes
+
+- fix event bus port
+
 ## 0.14.0
 
 ### Minor Changes

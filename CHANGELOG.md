@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.15.0
+
+### Minor Changes
+
+- simplify command and query handlers
+
 ## 0.14.1
 
 ### Patch Changes

@@ -25,7 +25,7 @@ describe('Aggregate', () => {
             let aggregate: FakeUserAggregate;
 
             beforeEach(() => {
-                commandBus.register(new LogUsernameChangedCommandHandler(logger));
+                commandBus.register('LogUsernameChangedCommandHandler', () => new LogUsernameChangedCommandHandler(logger));
                 eventBus.on(FakeUserEvents.USER_NAME_UPDATED, new UsernameChangedEventHandler(commandBus));
 
                 aggregate = FakeUserAggregate.create({

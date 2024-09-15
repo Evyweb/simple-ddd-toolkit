@@ -16,7 +16,7 @@ describe('[QueryBus]', () => {
             const queryBus = new QueryBus();
             const query = new FakeViewCurrentNameQuery('Current name');
 
-            queryBus.register(new FakeViewCurrentNameQueryHandler());
+            queryBus.register('FakeViewCurrentNameQueryHandler', () => new FakeViewCurrentNameQueryHandler());
 
             // Act
             const response = await queryBus.execute<FakeResponse>(query);
@@ -44,7 +44,7 @@ describe('[QueryBus]', () => {
             const logger = new FakeLogger();
             const query = new FakeViewCurrentNameQuery('Current name');
 
-            queryBus.register(new FakeViewCurrentNameQueryHandler());
+            queryBus.register('FakeViewCurrentNameQueryHandler', () => new FakeViewCurrentNameQueryHandler());
 
             queryBus.use(new QueryLoggingMiddleware(logger, 'Middleware 1'));
             queryBus.use(new QueryLoggingMiddleware(logger, 'Middleware 2'));

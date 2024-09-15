@@ -20,6 +20,7 @@ export * from './query/Query';
 export * from './query/IResponse';
 export * from './query/QueryHandler';
 export * from './queryBus/QueryBus';
+export * from "./queryBus/QueryBusPort";
 export * from './result/Result';
 export * from './useCase/IUseCase';
 export * from './valueObject/ValueObject';

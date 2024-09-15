@@ -2,12 +2,13 @@ import {IQueryHandler} from "@/query/IQueryHandler";
 import {IResponse} from "@/query/IResponse";
 import {QueryMiddleware} from "@/middleware/QueryMiddleware";
 import {Query} from "@/query/Query";
+import {QueryBusPort} from "@/queryBus/QueryBusPort";
 
-export class QueryBus {
-    private handlers: Map<string, IQueryHandler<Query, any>> = new Map();
+export class QueryBus implements QueryBusPort {
+    private handlers: Map<string, () => IQueryHandler<Query, any>> = new Map();
 
-    register<Response extends IResponse>(handler: IQueryHandler<Query, Response>): void {
-        this.handlers.set(handler.__TAG, handler as IQueryHandler<Query, Response>);
+    register<Response extends IResponse>(key: string, handler: () => IQueryHandler<Query, Response>): void {
+        this.handlers.set(key, handler as () => IQueryHandler<Query, Response>);
     }
 
     private middlewares: QueryMiddleware[] = [];
@@ -18,12 +19,13 @@ export class QueryBus {
 
     async execute<Response extends IResponse>(query: Query): Promise<Response> {
         const handlerName = `${query.__TAG}Handler`;
-        const handler = this.handlers.get(handlerName);
+        const handlerFactory = this.handlers.get(handlerName);
 
-        if (!handler) {
+        if (!handlerFactory) {
             throw new Error(`No handler registered for query type ${handlerName}`);
         }
 
+        const handler = handlerFactory();
         const executeHandler = (finalQuery: Query) => handler.handle(finalQuery) as Promise<IResponse>;
 
         const executeMiddlewares = (next: any, middleware: any) => middleware.execute.bind(middleware, query, next);

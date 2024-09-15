@@ -16,7 +16,7 @@ describe('[CommandBus]', () => {
             // Arrange
             const logger = new FakeLogger();
             const commandBus = new CommandBus();
-            commandBus.register(new FakeUpdateNameCommandHandler(logger));
+            commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
 
             // Act
             await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -31,7 +31,7 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new CommandBus();
-                commandBus.register(new FakeUpdateNameCommandHandler(logger));
+                commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
 
                 // Act
                 const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -47,7 +47,7 @@ describe('[CommandBus]', () => {
                 const logger = new FakeLogger();
                 const commandBus = new CommandBus();
                 commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware'));
-                commandBus.register(new FakeUpdateNameWithReturnedValueCommandHandler(logger));
+                commandBus.register('FakeUpdateNameWithReturnedValueCommandHandler', () => new FakeUpdateNameWithReturnedValueCommandHandler(logger));
 
                 // Act
                 const result = await commandBus.execute<string>(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
@@ -77,7 +77,7 @@ describe('[CommandBus]', () => {
             const command = new FakeUpdateNameCommand('NEW NAME');
             const logger = new FakeLogger();
             const commandBus = new CommandBus();
-            commandBus.register(new FakeUpdateNameCommandHandler(logger));
+            commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
 
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 1'));
             commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 2'));

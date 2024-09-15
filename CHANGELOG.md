@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.16.0
+
+### Minor Changes
+
+- merge command and query bus in bus
+
 ## 0.15.1
 
 ### Patch Changes

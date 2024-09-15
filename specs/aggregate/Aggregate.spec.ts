@@ -26,7 +26,7 @@ describe('Aggregate', () => {
 
             beforeEach(() => {
                 commandBus.register('LogUsernameChangedCommandHandler', () => new LogUsernameChangedCommandHandler(logger));
-                eventBus.on(FakeUserEvents.USER_NAME_UPDATED, new UsernameChangedEventHandler(commandBus));
+                eventBus.on(FakeUserEvents.USER_NAME_UPDATED, () => new UsernameChangedEventHandler(commandBus));
 
                 aggregate = FakeUserAggregate.create({
                     id: UuidFrom('15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a'),

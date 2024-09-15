@@ -7,9 +7,9 @@ export class EventBus implements EventBusPort {
     constructor(readonly logger: Logger) {
     }
 
-    readonly handlers: Record<string, IEventHandler<DomainEvent<any>>[]> = {};
+    readonly handlers: Record<string, (() => IEventHandler<DomainEvent<any>>)[]> = {};
 
-    on(eventType: string, handler: IEventHandler<DomainEvent<any>>): void {
+    on(eventType: string, handler: () => IEventHandler<DomainEvent<any>>): void {
         if (!this.handlers[eventType]) {
             this.handlers[eventType] = [];
         }
@@ -28,7 +28,8 @@ export class EventBus implements EventBusPort {
             }". Metadata: ${JSON.stringify(domainEvent.metadata)}`
         );
 
-        for (const handler of handlers) {
+        for (const handlerFactory of handlers) {
+            const handler = handlerFactory();
             await handler.handle(domainEvent);
         }
     }

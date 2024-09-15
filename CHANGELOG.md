@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.15.1
+
+### Patch Changes
+
+- fix command and query registration issues
+
 ## 0.15.0
 
 ### Minor Changes

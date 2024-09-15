@@ -1,6 +1,6 @@
 export * from './aggregate/Aggregate';
 export * from './command/Command';
-export * from './command/ICommandHandler';
+export * from './command/CommandHandler';
 export * from './commandBus/CommandBus';
 export * from './commandBus/CommandBusPort';
 export * from './domainEvent/DomainEvent';
@@ -18,7 +18,7 @@ export * from './middleware/CommandLoggingMiddleware';
 export * from './middleware/QueryLoggingMiddleware';
 export * from './query/Query';
 export * from './query/IResponse';
-export * from './query/IQueryHandler';
+export * from './query/QueryHandler';
 export * from './queryBus/QueryBus';
 export * from './result/Result';
 export * from './useCase/IUseCase';

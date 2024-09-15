@@ -1,12 +1,10 @@
 import {FakeCommand} from "./FakeCommand";
-import {ICommandHandler} from "@/command/ICommandHandler";
 import {Logger} from "@/logger/Logger";
+import {CommandHandler} from "@/command/CommandHandler";
 
-export class FakeCommandHandlerWithReturnedValue implements ICommandHandler<FakeCommand, boolean> {
-
-    readonly __TAG = 'FakeCommandHandlerWithReturnedValue';
-
+export class FakeCommandHandlerWithReturnedValue extends CommandHandler<FakeCommand, boolean> {
     constructor(private readonly logger: Logger) {
+        super();
     }
 
     async handle(command: FakeCommand): Promise<boolean> {

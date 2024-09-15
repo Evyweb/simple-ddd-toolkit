@@ -6,18 +6,19 @@ import {FakeUserEvents} from "./FakeUserEvents";
 import {FakeUserAggregate} from "./FakeUserAggregate";
 import {UsernameUpdatedEvent} from "./UsernameUpdatedEvent";
 import {OtherEvent} from "./OtherEvent";
-import {CommandBus} from "@/commandBus/CommandBus";
 import {UsernameChangedEventHandler} from "./UsernameChangedEventHandler";
+import {Command} from "@/bus/command/Command";
+import {Bus} from "@/bus/Bus";
 
 describe('Aggregate', () => {
     let eventBus: EventBus;
     let logger: FakeLogger;
-    let commandBus: CommandBus;
+    let commandBus: Bus<Command>;
 
     beforeEach(() => {
         logger = new FakeLogger();
         eventBus = new EventBus(logger);
-        commandBus = new CommandBus();
+        commandBus = new Bus<Command>();
     });
 
     describe('When dispatching domain events', () => {

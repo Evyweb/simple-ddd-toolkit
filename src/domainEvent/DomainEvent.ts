@@ -1,5 +1,7 @@
 import {Uuid} from "@/valueObject/uuid/UUIDFactory";
 
+import {Message} from "@/bus/Message";
+
 namespace DomainEvent {
     export interface Data {
         eventId: string,
@@ -9,7 +11,9 @@ namespace DomainEvent {
     }
 }
 
-export abstract class DomainEvent<Metadata extends Record<string, any>> {
+export abstract class DomainEvent<Metadata extends Record<string, any>> implements Message {
+    readonly __TAG: string = this.constructor.name;
+
     public readonly eventId: string;
     public readonly eventType: string;
     public readonly occurredOn: Date;

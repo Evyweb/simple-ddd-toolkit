@@ -1,4 +1,4 @@
-import {Command} from "@/command/Command";
+import {Command} from "@/bus/command/Command";
 
 export class LogUsernameChangedCommand extends Command {
     constructor(

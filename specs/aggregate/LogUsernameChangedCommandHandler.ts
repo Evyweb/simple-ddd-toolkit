@@ -1,6 +1,6 @@
 import {LogUsernameChangedCommand} from "./LogUsernameChangedCommand";
 import {Logger} from "@/logger/Logger";
-import {ICommandHandler} from "@/command/ICommandHandler";
+import {ICommandHandler} from "@/bus/command/ICommandHandler";
 
 export class LogUsernameChangedCommandHandler implements ICommandHandler<LogUsernameChangedCommand> {
   readonly __TAG = 'LogUsernameChangedCommandHandler';

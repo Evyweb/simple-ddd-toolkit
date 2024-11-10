@@ -25,7 +25,7 @@
     "url": "https://github.com/Evyweb/simple-ddd-toolkit.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

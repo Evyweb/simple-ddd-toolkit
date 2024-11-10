@@ -5,7 +5,7 @@ export default defineConfig({
     test: {
         coverage: {
             provider: 'v8',
-            exclude: ["specs/**/*", "**/index.ts"]
+            exclude: ["specs/**/*", "**/index.ts", "dist/**/*", "**/*.mts"]
         },
         globals: true,
     },

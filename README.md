@@ -112,17 +112,13 @@ interface RGBColor {
 export class Color extends ValueObject<RGBColor> {}
 ```
 
-<Callout type="warning" emoji="⚠️">
-    By default, you will not be able to create an instance of the `Color` class because its constructor is protected.
-</Callout>
+By default, you will not be able to create an instance of the `Color` class because its constructor is protected.
 
 ```typescript
 const color = new Color({ red: 255, green: 0, blue: 0 }); // Error
 ```
 
-<Callout type="info" emoji="ℹ️">
-    To create a new instance of the `Color` class, you need to create a **static factory method** that will validate the `red`, `green`, and `blue` values before creating the instance.
-</Callout>
+To create a new instance of the `Color` class, you need to create a **static factory method** that will validate the `red`, `green`, and `blue` values before creating the instance.
 
 A possible implementation to do that can be:
 

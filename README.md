@@ -743,3 +743,72 @@ export class AddProductToOrderCommandHandler extends CommandHandler<AddProductTo
 In this example, the `AddProductToOrderCommandHandler` class injects the event bus and dispatches the events after saving the order.
 
 The event bus is responsible for dispatching the events to the appropriate event handlers.
+
+# Commands
+
+A `Command` is a request to perform an action or change the state of the system.
+
+It encapsulates the data required to perform the action and is sent to a `Command Handler` to execute the action.
+
+The `Command Handler` is responsible for processing the command and updating the system's state accordingly.
+
+## How to create a command
+
+To create a command, you can extend the `Command` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {Command} from "@evyweb/simple-ddd-toolkit";
+
+export class CreateCharacterCommand extends Command {
+    public readonly __TAG = 'CreateCharacterCommand';
+
+    public readonly name: string;
+
+    constructor(name: string) {
+        super();
+        this.name = name;
+    }
+}
+```
+
+### How to create a command handler
+
+To create a command handler, you can extend the `CommandHandler` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {CommandHandler} from "@evyweb/simple-ddd-toolkit";
+
+export class CreateCharacterCommandHandler extends CommandHandler<CreateCharacterCommand, void> {
+    async handle(command: CreateCharacterCommand): Promise<void> {
+        // Process the command here
+    }
+}
+```
+Most of the time, a command handler will not return anything, so the second type parameter of the `CommandHandler` class is `void`.
+But it can return a value if needed (e.g., the id of the created element).
+
+### How to dispatch a command
+
+Commands are dispatched to the appropriate command handler using a `Command Bus`.
+
+To dispatch a command, you can use the `execute` method provided by the command bus.
+
+```typescript
+const command = new CreateCharacterCommand(name);
+await commandBus.execute(command);
+```
+
+The command bus is responsible for routing the command to the correct command handler and executing the handler.
+
+### Registering command handlers
+
+To register a command handler with the command bus, you can use the `register` method provided by the command bus.
+
+```typescript
+commandBus.register(CreateCharacterCommand, () => new CreateCharacterCommandHandler());
+```
+
+You can also use an ioc container (like inversify or ioctopus) to resolve the command handler.
+
+```typescript
+commandBus.register(CreateCharacterCommand, () => container.get(DI.CreateCharacterCommandHandler);

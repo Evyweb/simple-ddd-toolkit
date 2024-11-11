@@ -929,4 +929,128 @@ You can also use an ioc container (like inversify or ioctopus) to resolve the qu
 queryBus.register(LoadCharacterCreationDialogQuery, () => container.get(DI.LoadCharacterCreationDialogQueryHandler));
 ```
 
+# Middleware
 
+Middleware is a way to add additional behavior to commands and queries without modifying the core logic.
+
+It allows you to intercept commands and queries before they are processed by the command or query handler.
+
+## How to create middleware
+
+You can create middlewares for both commands and queries by extending the `CommandMiddleware` and `QueryMiddleware` classes provided by the `simple-ddd-toolkit` package.
+
+### Command middleware
+
+```typescript
+import {CommandMiddleware} from "./CommandMiddleware";
+import {Logger} from "@/logger/Logger";
+import {Command} from "@/bus/command/Command";
+
+export class CommandLoggingMiddleware implements CommandMiddleware {
+  constructor(
+    private readonly logger: Logger,
+    private readonly middlewareId: string
+  ) {}
+
+  async execute<Response>(command: Command, next: (command: Command) => Promise<Response>): Promise<Response> {
+    const date = new Date().toISOString();
+    this.logger.log(`[${date}][${this.middlewareId}][${command.__TAG}] - ${JSON.stringify(command)}`);
+    return next(command);
+  }
+}
+```
+
+### Query middleware
+
+```typescript
+import {QueryMiddleware} from "./QueryMiddleware";
+import {Logger} from "@/logger/Logger";
+import {IResponse} from "@/bus/query/IResponse";
+import {Query} from "@/bus/query/Query";
+
+export class QueryLoggingMiddleware implements QueryMiddleware {
+    constructor(
+        private readonly logger: Logger,
+        private readonly middlewareId: string
+    ) {
+    }
+
+    execute(query: Query, next: (query: Query) => Promise<IResponse>): Promise<IResponse> {
+        const date = new Date().toISOString();
+        this.logger.log(`[${date}][${this.middlewareId}][${query.__TAG}] - ${JSON.stringify(query)}`);
+        return next(query);
+    }
+}
+```
+
+In these examples, the `CommandLoggingMiddleware` and `QueryLoggingMiddleware` classes log the command or query data before passing it to the next middleware or the command/query handler.
+
+## How to register middleware
+
+To register middleware with the command bus or query bus, you can use the `use` method provided by the bus.
+
+```typescript
+commandBus.use(new CommandLoggingMiddleware(logger, 'CommandLoggingMiddleware'));
+queryBus.use(new QueryLoggingMiddleware(logger, 'QueryLoggingMiddleware'));
+```
+But you can also use an ioc container to resolve the middleware.
+
+```typescript
+commandBus.use(container.get(DI.CommandLoggingMiddleware));
+queryBus.use(container.get(DI.QueryLoggingMiddleware));
+```
+
+# Event Bus
+
+The `Event Bus` is a way to decouple components in a system by allowing them to communicate through events.
+
+It provides a mechanism for publishing and subscribing to events, allowing different parts of the system to react to changes without being tightly coupled.
+
+## How to register event handlers
+
+Similarly to the command bus and query bus, the event bus is responsible for routing events to the appropriate event handlers.
+
+```typescript
+import {EventBus} from "@evyweb/simple-ddd-toolkit";
+
+eventBus.on('ConversationCreatedEvent', () => new CreateDefaultPostEventHandler());
+```
+
+You can also use an ioc container to resolve the event handler.
+
+```typescript
+eventBus.on('ConversationCreatedEvent', () => container.get(DI.CreateDefaultPostEventHandler));
+```
+
+You can group all the event types in a single file to avoid typos or to group them by domain.
+
+```typescript
+export const EventTypes = {
+    ConversationCreatedEvent: 'ConversationCreatedEvent',
+    PostCreatedEvent: 'PostCreatedEvent',
+    // ...
+};
+
+eventBus.on(EventTypes.ConversationCreatedEvent, () => new CreateDefaultPostEventHandler());
+```
+### How to create an event handler
+
+To create an event handler, you can implement the `EventHandler` interface provided by the `simple-ddd-toolkit` package.
+
+```typescript
+export class CreateDefaultPostEventHandler implements IEventHandler<ConversationCreatedEvent> {
+    constructor(private readonly commandBus: Bus<Command>) {
+    }
+
+    async handle(event: ConversationCreatedEvent): Promise<void> {
+        const {conversationId, characterId, postId, userId, participantsIds} = event.metadata;
+        const command = new CreateDefaultPostCommand(conversationId, userId, characterId, postId, participantsIds);
+        await this.commandBus.execute(command);
+    }
+}
+```
+In this example, the `CreateDefaultPostEventHandler` class implements the `IEventHandler` interface and defines the `handle` method to process the event.
+
+The event handler can execute commands, queries, or any other logic based on the event data.
+
+Here the event handler creates a default post when a conversation is created.

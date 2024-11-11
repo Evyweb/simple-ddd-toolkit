@@ -811,4 +811,122 @@ commandBus.register(CreateCharacterCommand, () => new CreateCharacterCommandHand
 You can also use an ioc container (like inversify or ioctopus) to resolve the command handler.
 
 ```typescript
-commandBus.register(CreateCharacterCommand, () => container.get(DI.CreateCharacterCommandHandler);
+commandBus.register(CreateCharacterCommand, () => container.get(DI.CreateCharacterCommandHandler));
+```
+
+# Query
+
+A `Query` is a request for data from the system.
+
+It encapsulates the data required to retrieve information and is sent to a `Query Handler` to fetch the data.
+
+The `Query Handler` is responsible for processing the query and returning the requested information.
+
+## How to create a query
+
+To create a query, you can extend the `Query` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {Query} from "@evyweb/simple-ddd-toolkit";
+
+export class LoadCharacterCreationDialogQuery extends Query {
+    public readonly __TAG = 'LoadCharacterCreationDialogQuery';
+}
+```
+
+### How to create a query handler
+
+To create a query handler, you can extend the `QueryHandler` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {QueryHandler} from "@evyweb/simple-ddd-toolkit";
+
+export class LoadCharacterCreationDialogQueryHandler extends QueryHandler<LoadCharacterCreationDialogQuery, LoadCharacterCreationDialogResponse> {
+    async handle(_query: LoadCharacterCreationDialogQuery): Promise<LoadCharacterCreationDialogResponse> {
+        // Data can be fetched from a database, an API, or any other source
+        return {
+            title: 'Add a new character',
+            subTitle: 'Fill out the form to create a new character.',
+            form: {
+                avatar: {
+                    label: 'Avatar',
+                    required: false,
+                    value: '/images/avatars/default.png'
+                },
+                name: {
+                    label: 'Name *',
+                    placeholder: 'Character name',
+                    required: true,
+                    value: ''
+                },
+                submit: {
+                    label: 'Validate'
+                },
+                cancel: {
+                    label: 'Cancel'
+                }
+            }
+        }
+    }
+}
+```
+
+The `LoadCharacterCreationDialogQueryHandler` class extends the `QueryHandler` class and defines the response type as `LoadCharacterCreationDialogResponse`.
+The response is also known as a ViewModel.
+
+```typescript
+interface CharacterCreationFormViewModel {
+    avatar: {
+        label: string;
+        required: boolean;
+        value: string;
+    };
+    name: {
+        label: string;
+        placeholder: string;
+        required: boolean;
+        value: string;
+    };
+    submit: {
+        label: string;
+    };
+    cancel: {
+        label: string;
+    };
+}
+
+export interface LoadCharacterCreationDialogResponse {
+    title: string;
+    subTitle: string;
+    form: CharacterCreationFormViewModel;
+}
+```
+
+### How to dispatch a query
+
+Queries are dispatched to the appropriate query handler using a `Query Bus`.
+
+To dispatch a query, you can use the `execute` method provided by the query bus.
+
+```typescript
+const query = new LoadCharacterCreationDialogQuery();
+const response = await queryBus.execute(query);
+```
+
+The query bus is responsible for routing the query to the correct query handler and executing the handler.
+
+### Registering query handlers
+
+To register a query handler with the query bus, you can use the `register` method provided by the query bus.
+
+```typescript
+queryBus.register(LoadCharacterCreationDialogQuery, () => new LoadCharacterCreationDialogQueryHandler());
+```
+
+You can also use an ioc container (like inversify or ioctopus) to resolve the query handler.
+
+```typescript
+queryBus.register(LoadCharacterCreationDialogQuery, () => container.get(DI.LoadCharacterCreationDialogQueryHandler));
+```
+
+

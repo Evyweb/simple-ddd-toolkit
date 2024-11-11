@@ -606,3 +606,140 @@ user.toObject(); // { id: '...', name: 'John Doe' }
 ```
 
 The `toObject` method returns an object with the properties of the entity.
+
+# Aggregate
+
+An `Aggregate` is a cluster of domain objects that can be treated as a single unit.
+
+It is an important concept in Domain-Driven Design (DDD) that helps to maintain consistency and integrity in the domain model.
+
+An aggregate has the following characteristics:
+
+- **Root Entity**: An aggregate has a root entity that acts as the entry point to the aggregate. The root entity is responsible for maintaining the consistency of the aggregate.
+- **Boundary**: An aggregate defines a boundary within which all domain objects are consistent with each other. The root entity enforces the consistency of the aggregate by controlling access to its internal objects.
+- **Transaction**: An aggregate is treated as a single unit in a transaction. All changes to the aggregate are made atomically, ensuring that the aggregate remains in a consistent state.
+- **Identity**: An aggregate has a unique identity that distinguishes it from other aggregates in the system.
+- **Encapsulation**: An aggregate encapsulates its internal objects and exposes only the root entity to the outside world.
+- **Invariants**: An aggregate enforces invariants that must be true for the aggregate to be in a valid state.
+
+## How to implement an aggregate
+
+To create an aggregate, you can extend the `Aggregate` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {Aggregate} from "@evyweb/simple-ddd-toolkit";
+
+interface OrderData {
+    id: UUID;
+    items: OrderItem[];
+    date: Date;
+}
+
+export class Order extends Aggregate<OrderData> {
+    static create(orderData: OrderData): Order {
+        // Validation rules here
+        return new Order(orderData);
+    }
+
+    addItem(productId: string, quantity: number): void {
+        if (this.get('items').length >= 10) {
+            throw new Error("An order cannot contain more than 10 items.");
+        }
+        const item = OrderItem.create({productId, quantity});
+        this.get('items').push(item);
+    }
+}
+
+const order = await orderRepository.getById('order-id');
+order.addItem('product1', 2);
+orderRepository.save(order);
+```
+
+In this example, the `Order` class extends the `Aggregate` class and defines a `create` method to create a new order.
+
+The `addItem` method adds a new item to the order. It checks if the order already contains 10 items and throws an error if the limit is reached.
+
+The `Order` class can be used to create and manage orders in the domain model.
+
+The `Order` is then saved to the repository using the `save` method provided by the repository.
+
+## Domain events
+
+An aggregate can emit domain events to notify other parts of the system about changes in its state.
+
+### How to create a domain event
+
+To create a domain event, you can extend the `DomainEvent` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {DomainEvent} from "@evyweb/simple-ddd-toolkit";
+
+interface Metadata {
+    orderId: string;
+    productId: string;
+    quantity: string;
+}
+
+export class ProductAddedToOrderEvent extends DomainEvent<Metadata> {
+    constructor(
+        public readonly orderId: string,
+        public readonly productId: string,
+        public readonly quantity: number
+    ) {
+        super();
+    }
+}
+```
+
+In this example, the `ProductAddedToOrderEvent` class extends the `DomainEvent` class and defines the metadata for the event.
+
+When creating a `DomainEvent`, the following data are available and can be override if needed:
+- **eventId**: A unique identifier for the event.
+- **eventType**: The type of the event, by default it is the constructor name.
+- **occurredOn**: The date and time when the event occurred.
+- **metadata**: Additional data related to the event.
+
+### Emitting domain events
+
+To emit domain events from an aggregate, you need to add the events to the queue first.
+To do so, you can use the `addEvent` method provided by the `Aggregate` class.
+
+```typescript
+const order = await orderRepository.getById('order-id');
+order.addItem('product1', 2);
+
+order.addEvent(new ProductAddedToOrderEvent(order.id(), 'product1', 2));
+
+orderRepository.save(order);
+
+eventBus.dispatchEvents(order.getEvents());
+```
+
+Then you need to dispatch the events to the event bus using the `dispatchEvents` method provided by the event bus.
+You need to inject the event bus into the commandHandler to be able to use it.
+
+```typescript
+export class AddProductToOrderCommandHandler extends CommandHandler<AddProductToOrderCommand, void> {
+
+    constructor(
+        private readonly orderRepository: OrderRepository,
+        private readonly eventBus: EventBus
+    ) {
+        super();
+    }
+
+    async handle(command: AddProductToOrderCommand): Promise<void> {
+        const order = await this.orderRepository.getById(command.orderId);
+        order.addItem(command.productId, command.quantity);
+
+        order.addEvent(new ProductAddedToOrderEvent(order.id(), command.productId, command.quantity));
+
+        this.orderRepository.save(order);
+        this.eventBus.dispatchEvents(order.getEvents());
+    }
+}
+```
+
+In this example, the `AddProductToOrderCommandHandler` class injects the event bus and dispatches the events after saving the order.
+
+The event bus is responsible for dispatching the events to the appropriate event handlers.

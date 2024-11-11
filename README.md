@@ -453,4 +453,156 @@ export class AnyCustomError extends CustomError {
 
 When you define the custom error class, you will need to override the `isDomainError` and `isTechnicalError` methods to specify the type of error.
 
-TODO
+# Entity
+
+An `Entity` is an object encapsulating domain logic and data, and it has a distinct identity that runs throughout its lifecycle.
+
+"We design a domain concept as an `Entity` when we care about its individuality, when distinguishing it from all other objects in a system is a mandatory constraint.
+An entity is a unique thing and is capable of being changed continuously over a long period of time" - Vaughn Vernon
+
+### Difference between `Entity` and `Value Object`
+
+It is the unique identity and mutability that distinguishes an `Entity` from a `Value Object`.
+
+### Identity
+
+Value objects can serve as holders of unique identity. They are immutable, which ensures identity stability, and any behavior specific to the kind of identity is centralized.
+
+## Some examples of entities
+
+- `User`
+- `Order`
+- `Product`
+- `Customer`
+- `Account`
+- `Invoice`
+
+## How to implement an entity
+
+To create an entity, you can extend the `Entity` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {Entity} from "@evyweb/simple-ddd-toolkit";
+
+interface UserData {
+    id: UUID;
+    name: string;
+}
+
+export class User extends Entity<UserData> {
+    static create(userData: UserData): User {
+        // Validation rules here
+        return new User(userData);
+    }
+}
+```
+
+Here UUID is a type that represents a universally unique identifier. It is exposed by the `simple-ddd-toolkit` package as a ready to use Value Object.
+
+Just like the `ValueObject` class, the `Entity` class has a protected constructor, which means you cannot create an instance of the `User` class directly.
+
+```typescript
+const user = new User({ id: UUID.create(), name: 'John Doe' }); // Error
+```
+
+To create a new instance of the `User` class, you need to use a static factory method.
+
+```typescript
+const user = User.create({ id: UUID.create(), name: 'John Doe' });
+```
+
+This way, you can ensure that the entity is created with valid data.
+
+Similarly to the `ValueObject` class, the `Entity` factory functions can be combined with the `Result` pattern to handle validation errors.
+
+```typescript
+import {Result} from "@evyweb/simple-ddd-toolkit";
+
+interface UserData {
+    id: UUID;
+    name: string;
+}
+
+class InvalidUserNameError extends DomainError {
+    constructor() {
+        super('Username cannot contain special characters.');
+    }
+}
+
+export class User extends Entity<UserData> {
+    static create(userData: UserData): Result<User, InvalidUserError> {
+        if (User.isInvalidUserName(userData.name)) {
+            return Result.fail(new InvalidUserNameError());
+        }
+
+        return Result.ok(new User(userData));
+    }
+        
+    private static isInvalidUserName(name: string): boolean {
+        return /[^a-zA-Z0-9]/.test(name);
+    }
+
+}
+```
+
+In this example, the `create` method returns a `Result` object that contains either a `User` entity or an `InvalidUserNameError` error.
+
+## Get the properties of an entity
+
+You can retrieve the `id` and `name` values of the user entity using the `get` method provided by the `Entity` class.
+
+```typescript
+const user = User.create({ id: UUID.create(), name: 'John Doe' });
+
+user.get('id'); // UUID
+user.get('name'); // 'John Doe'
+```
+
+Note that the `id` returned by the `get` method is a `UUID` value object.
+To get the actual value of the `UUID` object, you can use the `get('value')` method provided by the `UUID` class.
+
+```typescript
+const userId = user.get('id').get('value');
+```
+You can also use the shortcut method `id()` to get the `id` value directly.
+
+```typescript
+const userId = user.id(); // Similar to user.get('id').get('value')
+```
+
+## Update entity properties
+
+An entity is mutable, which means you can change its properties directly.
+
+```typescript
+const user = User.create({ id: UUID.create(), name: 'John Doe' });
+
+user.set('name', 'Jane Doe');
+```
+
+In this example, the `name` property of the user entity is updated to 'Jane Doe'.
+
+## Identity comparison
+
+Entities are compared based on their identity, not their attributes.
+
+```typescript
+const user1 = User.create({ id: UUID.create(), name: 'John Doe' });
+const user2 = User.create({ id: UUID.create(), name: 'Jane Doe' });
+
+console.log(user1.equals(user2)); // false
+```
+
+In this example, even though the `name` property of the two user entities is different, they are considered equal because they have different identities.
+
+## toObject() helper method
+
+You can convert an entity to a plain JavaScript object using the `toObject` method provided by the `Entity` class.
+
+```typescript
+const user = User.create({ id: UUID.create(), name: 'John Doe' });
+
+user.toObject(); // { id: '...', name: 'John Doe' }
+```
+
+The `toObject` method returns an object with the properties of the entity.

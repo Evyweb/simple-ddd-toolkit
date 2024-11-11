@@ -238,9 +238,97 @@ color.get('blue'); // 255
 
 You will get autocomplete suggestions for the `get` method based on the properties of the `Color` class.
 
-## Combine with the result pattern
+## Update the value(s) of the value object
+As mentioned earlier, a value object is immutable. You cannot change the `red`, `green`, and `blue` values of the color object directly.
+You will need to create a new color object with the updated values.
 
-Note that you can combine the value object factory method with the result pattern to return a result object that contains the created value object or an error.
+```typescript
+const color = Color.fromRGB({red: 255, green: 255, blue: 255});
+const newColor = color.removeRed();
+
+class Color extends ValueObject<RGBColor> {
+    // ...
+    removeRed(): Color {
+        return Color.fromRGB({
+            red: 0,
+            green: this.get('green'),
+            blue: this.get('blue'),
+        });
+    }
+}
+```
+
+In this example, the `removeRed` method creates a new color object with the `red` value set to 0 and the `green` and `blue` values copied from the original color object.
+
+## Using directly the constructor (not recommended)
+
+If you want to use a constructor instead of a static factory method, you can simply make the constructor public.
+
+```typescript
+export class Color extends ValueObject<RGBColor> {
+    constructor({red, green, blue}: RGBColor) {
+        // Validate the red, green, and blue values here
+        super({red, green, blue});
+    }
+
+    // Other methods
+}
+```
+
+Now you can create a new instance of the `Color` class using the constructor directly.
+
+```typescript
+const color = new Color({ red: 255, green: 0, blue: 0 });
+```
+
+## Nested values (not recommended)
+
+It is recommended to avoid nested values in the value object.
+Try to keep the value object as flat as possible and simple to use.
+If you need to store complex data, consider creating a separate value object for that data.
+
+# Result Pattern
+
+The `Result` pattern is a way to handle errors and success cases in a more explicit way.
+
+It is a simple pattern that consists of two possible outcomes: `Ok` and `Fail`.
+
+The `Ok` outcome represents a successful operation and contains the result of the operation.
+
+The `Fail` outcome represents a failed operation and contains an error object that describes the reason for the failure.
+
+## How to use the Result pattern
+
+The `Result` class provided by the `simple-ddd-toolkit` package can be used to create `Ok` and `Fail` outcomes.
+
+```typescript
+import {Result} from "@evyweb/simple-ddd-toolkit";
+
+const successResult = Result.ok("Operation successful");
+const errorResult = Result.fail(new Error("Operation failed"));
+```
+
+You can check if the result is successful using the `isOk` method.
+
+```typescript
+if (currentResult.isOk()) {
+    console.log(currentResult.getValue());
+}
+```
+
+You can check if the result is a failure using the `isFail` method.
+
+```typescript
+if (currentResult.isFail()) {
+    console.log(currentResult.getError());
+}
+```
+
+Note that you cannot have both a value and an error in the same result object. It is either an `Ok` outcome with a value or a `Fail` outcome with an error.
+
+## Combine factory methods with result pattern
+
+Note that you can `combine the value object factory method with the result pattern` to return a result object that contains the created value object or an error.
 It can be useful to handle validation errors when creating the value object.
 
 ```typescript
@@ -276,29 +364,93 @@ if(colorCreation.isOk()) {
 }
 ```
 
-## Using directly the constructor (not recommended)
+Note the return type of the `fromRGB` method: `Result<Color, InvalidRGBColorError>`.
 
-If you want to use a constructor instead of a static factory method, you can simply make the constructor public.
+That means that the `fromRGB` method can return an `Ok` outcome with a `Color` object or a `Fail` outcome with an `InvalidRGBColorError` object.
+
+# Errors
+
+In the `simple-ddd-toolkit`, errors are represented as classes that extend the `Error` class.
+
+To help you create more explicit errors, we gave you 3 classes `TechnicalError`, `DomainError` and `CustomError` that you can extend to create your custom errors.
+Note: `TechnicalError` and `DomainError` extend the `CustomError` class.
+
+This way, you can create different types of errors based on the context in which they occur and react differently if the error is a technical error or a domain error.
+
+## How to create a domain error
+
+To create a domain error, you can extend the `DomainError` class provided by the `simple-ddd-toolkit` package.
 
 ```typescript
-export class Color extends ValueObject<RGBColor> {
-    constructor({red, green, blue}: RGBColor) {
-        // Validate the red, green, and blue values here
-        super({red, green, blue});
-    }
+import {DomainError} from "@/errors/DomainError";
 
-    // Other methods
+export class AnyDomainError extends DomainError {
+    constructor() {
+        super('Any domain related error message'); // Can be also a translation key
+    }
 }
 ```
 
-Now you can create a new instance of the `Color` class using the constructor directly.
+When you will create the error object, you will have access to two helpers methods `isDomainError` and `isTechnicalError` to check the type of the error more easily.
 
 ```typescript
-const color = new Color({ red: 255, green: 0, blue: 0 });
+const error = new AnyDomainError();
+
+if(error.isDomainError()) {
+    // Handle domain error
+} else if(error.isTechnicalError()) {
+    // Handle technical error
+}
 ```
 
-## Nested values (not recommended)
+## How to create a technical error
 
-It is recommended to avoid nested values in the value object.
-Try to keep the value object as flat as possible and simple to use.
-If you need to store complex data, consider creating a separate value object for that data.
+To create a technical error, you can extend the `TechnicalError` class provided by the `simple-ddd-toolkit` package.
+
+```typescript
+import {TechnicalError} from "@/errors/TechnicalError";
+
+export class AnyTechnicalError extends TechnicalError {
+    constructor() {
+        super('Any technical related error message'); // Can be also a translation key
+    }
+}
+```
+
+When you will create the error object, you will have access to two helpers methods `isDomainError` and `isTechnicalError` to check the type of the error more easily.
+
+```typescript
+const error = new AnyTechnicalError();
+
+if(error.isDomainError()) {
+    // Handle domain error
+} else if(error.isTechnicalError()) {
+    // Handle technical error
+}
+```
+
+## How to create a custom error
+
+The `CustomError` class provided by the `simple-ddd-toolkit` package can be used to create custom errors.
+
+```typescript
+import {CustomError} from "@/errors/CustomError";
+
+export class AnyCustomError extends CustomError {
+    constructor() {
+        super('Any custom error message'); // Can be also a translation key
+    }
+
+    isDomainError(): boolean {
+        return false;
+    }
+
+    isTechnicalError(): boolean {
+        return true;
+    }
+}
+```
+
+When you define the custom error class, you will need to override the `isDomainError` and `isTechnicalError` methods to specify the type of error.
+
+TODO

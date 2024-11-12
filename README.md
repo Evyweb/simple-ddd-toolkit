@@ -587,13 +587,14 @@ In this example, the `name` property of the user entity is updated to 'Jane Doe'
 Entities are compared based on their identity, not their attributes.
 
 ```typescript
-const user1 = User.create({ id: UUID.create(), name: 'John Doe' });
-const user2 = User.create({ id: UUID.create(), name: 'Jane Doe' });
+const userId = UUID.create();
+const user1 = User.create({ id: userId, name: 'John Doe' });
+const user2 = User.create({ id: userId, name: 'Jane Doe' });
 
-console.log(user1.equals(user2)); // false
+console.log(user1.equals(user2)); // true
 ```
 
-In this example, even though the `name` property of the two user entities is different, they are considered equal because they have different identities.
+In this example, even though the `name` properties of the two user entities are different, they are considered as the same because they have same identities.
 
 ## toObject() helper method
 

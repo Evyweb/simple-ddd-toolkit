@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.17.0
+
+### Minor Changes
+
+- update CI and badges
+
 ## 0.16.0
 
 ### Minor Changes

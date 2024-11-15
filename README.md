@@ -1,4 +1,11 @@
 # Simple DDD Toolkit 🛠️
+[![NPM Version](https://img.shields.io/npm/v/%40evyweb%2Fsimple-ddd-toolkit.svg?style=flat)]()
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/evyweb/simple-ddd-toolkit/main.yml)
+[![codecov](https://codecov.io/gh/Evyweb/simple-ddd-toolkit/graph/badge.svg?token=A3Z8UCNHDY)](https://codecov.io/gh/Evyweb/simple-ddd-toolkit)
+
+![NPM Downloads](https://img.shields.io/npm/dm/%40evyweb%2Fsimple-ddd-toolkit)
+[![NPM Downloads](https://img.shields.io/npm/dt/%40evyweb%2Fsimple-ddd-toolkit.svg?style=flat)]()
+
 
 A simple Domain Driven Design Toolkit created to help developers to understand how to implement DDD concepts. It also contains some useful stuff not directly related to DDD, like a command bus or result pattern.
 
@@ -809,7 +816,7 @@ To register a command handler with the command bus, you can use the `register` m
 commandBus.register(CreateCharacterCommand, () => new CreateCharacterCommandHandler());
 ```
 
-You can also use an ioc container (like inversify or ioctopus) to resolve the command handler.
+You can also use an ioc container (like inversify or simple-ddd-toolkit) to resolve the command handler.
 
 ```typescript
 commandBus.register(CreateCharacterCommand, () => container.get(DI.CreateCharacterCommandHandler));
@@ -924,7 +931,7 @@ To register a query handler with the query bus, you can use the `register` metho
 queryBus.register(LoadCharacterCreationDialogQuery, () => new LoadCharacterCreationDialogQueryHandler());
 ```
 
-You can also use an ioc container (like inversify or ioctopus) to resolve the query handler.
+You can also use an ioc container (like inversify or simple-ddd-toolkit) to resolve the query handler.
 
 ```typescript
 queryBus.register(LoadCharacterCreationDialogQuery, () => container.get(DI.LoadCharacterCreationDialogQueryHandler));

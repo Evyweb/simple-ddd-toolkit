@@ -70,7 +70,7 @@ describe('Aggregate', () => {
                     it('should trigger the registered handler just after the execution', async () => {
                         // Arrange
                         const events = aggregate.getEvents();
-                        await eventBus.dispatchEventsAsync(events);
+                        eventBus.dispatchEventsAsync(events);
 
                         // Act
                         vi.runAllTimers();

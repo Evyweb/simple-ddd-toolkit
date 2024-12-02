@@ -40,7 +40,7 @@ export class EventBus implements EventBusPort {
         }
     }
 
-    async dispatchEventsAsync(events: DomainEvent<Record<string, any>>[]) {
+    dispatchEventsAsync(events: DomainEvent<Record<string, any>>[]): void {
         setImmediate(async () => {
             for (const event of events) {
                 await this.dispatch(event);

@@ -1070,14 +1070,17 @@ To dispatch events to the event bus, you can use the `dispatch` and `dispatchAsy
 ```typescript
 const event = new ProductAddedToOrderEvent(order.id(), 'product1', 2);
 
-// Use await if you want to wait for the event to be processed before continuing
+// Use dispatch if you want to wait for the event to be processed before continuing (also present on aggregates)
 await eventBus.dispatch(event); 
 
-// Use dispatchAsync if you want to dispatch the event without waiting for it to be processed so the user can continue using the application without waiting
-await eventBus.dispatchAsync(event);
+// if you want to dispatch events without blocking the user, prefer dispatchAsync (also present on aggregates)
+// Don't use: "eventBus.dispatch(event);" without await
+
+// Use:
+eventBus.dispatchAsync(event);
 ```
 
-The `dispatch` method is synchronous, which means it will wait for the event to be processed before continuing.
+The `dispatch` method has to be executed with an `await`, as it is synchronous and will wait for the event to be processed before continuing.
 
 The `dispatchAsync` method is asynchronous, which means it will dispatch the event without waiting for it to be processed.
 
@@ -1088,7 +1091,7 @@ You can use for eventual consistency.
 
 Under the hood, the `dispatchAsync` method uses the `setImmediate` function to dispatch events asynchronously.
 
-#### Why not use `Promise.resolve().then(() => eventBus.dispatch(event))` or `process.nextTick(() => eventBus.dispatch(event))`?
+#### Why not use `Promise.resolve().then(() => eventBus.dispatch(event))` or `process.nextTick(() => eventBus.dispatch(event))` or remove the `await` from `eventBus.dispatch(event)`?
 
 The `setImmediate` function is a more reliable way to dispatch events asynchronously because it ensures that the event is dispatched after the current phase of the event loop has completed. Tasks added via `setImmediate` are placed in the **macrotask queue** (specifically in the "check" phase), whereas tasks from `Promise.resolve` or `process.nextTick` are placed in the **microtask queue**.
 

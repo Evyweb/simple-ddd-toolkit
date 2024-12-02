@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.18.0
+
+### Minor Changes
+
+- Add dispatch events async functions for eventual consistency
+
 ## 0.17.0
 
 ### Minor Changes

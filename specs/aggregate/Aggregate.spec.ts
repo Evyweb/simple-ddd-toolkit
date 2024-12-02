@@ -57,19 +57,52 @@ describe('Aggregate', () => {
                 });
             });
 
-            describe('When the dispatch is done by the aggregate', () => {
-                it('should trigger the registered handler', () => {
-                    // Act
-                    aggregate.dispatchEvents(eventBus);
+            describe('When the dispatch is asynchronous', () => {
+                beforeEach(() => {
+                    vi.useFakeTimers();
+                });
 
-                    // Assert
-                    expect(logger.messages).toHaveLength(2);
+                afterEach(() => {
+                    vi.useRealTimers();
+                });
 
-                    const [firstMessage, secondMessage] = logger.messages;
-                    expect(firstMessage).toEqual(
-                        `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
-                    );
-                    expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                describe('When the dispatch is done by the event bus', () => {
+                    it('should trigger the registered handler just after the execution', async () => {
+                        // Arrange
+                        const events = aggregate.getEvents();
+                        await eventBus.dispatchEventsAsync(events);
+
+                        // Act
+                        vi.runAllTimers();
+
+                        // Assert
+                        expect(logger.messages).toHaveLength(2);
+
+                        const [firstMessage, secondMessage] = logger.messages;
+                        expect(firstMessage).toEqual(
+                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
+                        );
+                        expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                    });
+                });
+
+                describe('When the dispatch is done by the aggregate', () => {
+                    it('should trigger the registered handler just after the execution', () => {
+                        // Arrange
+                        aggregate.dispatchEventsAsync(eventBus);
+
+                        // Act
+                        vi.runAllTimers();
+
+                        // Assert
+                        expect(logger.messages).toHaveLength(2);
+
+                        const [firstMessage, secondMessage] = logger.messages;
+                        expect(firstMessage).toEqual(
+                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
+                        );
+                        expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                    });
                 });
             });
         });

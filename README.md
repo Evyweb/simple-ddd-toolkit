@@ -1062,3 +1062,38 @@ In this example, the `CreateDefaultPostEventHandler` class implements the `IEven
 The event handler can execute commands, queries, or any other logic based on the event data.
 
 Here the event handler creates a default post when a conversation is created.
+
+## How to dispatch the events
+
+To dispatch events to the event bus, you can use the `dispatch` and `dispatchAsync` methods provided by the event bus.
+
+```typescript
+const event = new ProductAddedToOrderEvent(order.id(), 'product1', 2);
+
+// Use await if you want to wait for the event to be processed before continuing
+await eventBus.dispatch(event); 
+
+// Use dispatchAsync if you want to dispatch the event without waiting for it to be processed so the user can continue using the application without waiting
+await eventBus.dispatchAsync(event);
+```
+
+The `dispatch` method is synchronous, which means it will wait for the event to be processed before continuing.
+
+The `dispatchAsync` method is asynchronous, which means it will dispatch the event without waiting for it to be processed.
+
+Using `dispatchAsync` can be useful when you want to dispatch events without blocking the main thread. For example, when you want to dispatch events in the background.
+You can use for eventual consistency.
+
+### Notes: 
+
+Under the hood, the `dispatchAsync` method uses the `setImmediate` function to dispatch events asynchronously.
+
+#### Why not use `Promise.resolve().then(() => eventBus.dispatch(event))` or `process.nextTick(() => eventBus.dispatch(event))`?
+
+The `setImmediate` function is a more reliable way to dispatch events asynchronously because it ensures that the event is dispatched after the current phase of the event loop has completed. Tasks added via `setImmediate` are placed in the **macrotask queue** (specifically in the "check" phase), whereas tasks from `Promise.resolve` or `process.nextTick` are placed in the **microtask queue**.
+
+This distinction is crucial because the **microtask queue** is processed before the event loop moves to the next phase, which means that using `Promise.resolve` or `process.nextTick` can introduce unintended blocking if the tasks are computationally expensive or numerous. In contrast, `setImmediate` ensures that the current phase of the event loop (including microtasks) is entirely finished before the event is dispatched, reducing the risk of blocking or performance degradation.
+
+#### Why not use `setTimeout(() => eventBus.dispatch(event), 0)`?
+
+While `setTimeout` is similar to `setImmediate`, it schedules the task in the **timer queue**, which is processed after a minimum delay and only after the next phase of the event loop. `setImmediate` schedules the task in the **check queue**, allowing it to be executed earlier than a `setTimeout` task.

@@ -22,6 +22,12 @@ export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<
         this.clearEvents();
     }
 
+    async dispatchEventsAsync(bus: EventBusPort): Promise<void> {
+        setImmediate(async () => {
+            await this.dispatchEvents(bus);
+        });
+    }
+
     getEvents() {
         const eventsToDispatch = [...this.domainEvents];
         this.clearEvents();

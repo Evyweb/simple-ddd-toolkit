@@ -1,9 +1,9 @@
-import { UUID } from './UUID';
+import {UUID} from './UUID';
 
 export function Uuid(): UUID {
-  return UUID.create();
+    return UUID.create();
 }
 
 export function UuidFrom(value: string): UUID {
-  return UUID.createFrom(value);
+    return UUID.createFrom(value);
 }

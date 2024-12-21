@@ -1,17 +1,15 @@
 import {Uuid} from "@/valueObject/uuid/UUIDFactory";
-
 import {Message} from "@/bus/Message";
+import {Metadata} from "@/domainEvent/Metadata";
 
-namespace DomainEvent {
-    export interface Data {
-        eventId: string,
-        eventType: string,
-        occurredOn: Date,
-        metadata: Record<string, any>
-    }
+interface DomainEventData {
+    eventId?: string;
+    eventType?: string;
+    occurredOn?: Date;
+    metadata?: Metadata;
 }
 
-export abstract class DomainEvent<Metadata extends Record<string, any>> implements Message {
+export abstract class DomainEvent implements Message {
     readonly __TAG: string = this.constructor.name;
 
     public readonly eventId: string;
@@ -19,10 +17,10 @@ export abstract class DomainEvent<Metadata extends Record<string, any>> implemen
     public readonly occurredOn: Date;
     public readonly metadata: Metadata;
 
-    public constructor(eventData?: Partial<DomainEvent.Data>) {
-        this.eventId = eventData?.eventId || Uuid().get('value');
+    public constructor(eventData?: DomainEventData) {
+        this.eventId = eventData?.eventId || Uuid().get("value");
         this.eventType = eventData?.eventType || this.constructor.name;
         this.occurredOn = eventData?.occurredOn || new Date();
-        this.metadata = eventData?.metadata as Metadata || {} as Metadata;
+        this.metadata = eventData?.metadata || {}
     }
 }

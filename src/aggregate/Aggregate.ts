@@ -1,12 +1,14 @@
-import {Entity} from "@/entity/Entity";
 import {DomainEvent} from "@/domainEvent/DomainEvent";
-import {UUID} from "@/valueObject/uuid/UUID";
 import {EventBusPort} from "@/eventBus/EventBusPort";
+import {UUID} from "@/valueObject/uuid/UUID";
+import {Entity} from "@/entity/Entity";
 
-export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<EntityData> {
-    private domainEvents: DomainEvent<Record<string, any>>[] = [];
+export abstract class Aggregate<
+    EntityData extends { id: UUID },
+> extends Entity<EntityData> {
+    private domainEvents: DomainEvent[] = [];
 
-    addEvent(domainEvent: DomainEvent<Record<string, any>>): void {
+    addEvent(domainEvent: DomainEvent): void {
         this.domainEvents.push(domainEvent);
     }
 
@@ -18,7 +20,6 @@ export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<
         for (const event of this.domainEvents) {
             await bus.dispatch(event);
         }
-
         this.clearEvents();
     }
 
@@ -28,7 +29,7 @@ export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<
         });
     }
 
-    getEvents() {
+    getEvents(): DomainEvent[] {
         const eventsToDispatch = [...this.domainEvents];
         this.clearEvents();
         return eventsToDispatch;

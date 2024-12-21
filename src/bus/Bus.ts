@@ -1,23 +1,17 @@
 import {Message} from "@/bus/Message";
-
-type Middleware<MessageType> = {
-    execute: (message: MessageType, next: (message: MessageType) => Promise<any>) => Promise<any>;
-};
-
-interface MessageHandler<M extends Message, R> {
-    handle(message: M): Promise<R>;
-}
+import {IMiddleware} from "@/bus/IMiddleware";
+import {IMessageHandler} from "@/bus/IMessageHandler";
 
 export class Bus<M extends Message> {
-    private handlers: Map<string, () => MessageHandler<M, any>> = new Map();
-    private middlewares: Middleware<M>[] = [];
+    private handlers: Map<string, () => IMessageHandler<M, unknown>> = new Map();
+    private middlewares: IMiddleware<M, unknown>[] = [];
 
-    register<R>(key: string, handler: () => MessageHandler<M, R>): void {
-        this.handlers.set(key, handler);
+    register<R>(key: string, handler: () => IMessageHandler<M, R>): void {
+        this.handlers.set(key, handler as () => IMessageHandler<M, unknown>);
     }
 
-    use(middleware: Middleware<M>): void {
-        this.middlewares.push(middleware);
+    use<R>(middleware: IMiddleware<M, R>): void {
+        this.middlewares.push(middleware as IMiddleware<M, unknown>);
     }
 
     async execute<R>(message: M): Promise<R> {
@@ -29,15 +23,18 @@ export class Bus<M extends Message> {
         }
 
         const handler = handlerFactory();
-        const executeHandler = (finalMessage: M) => handler.handle(finalMessage) as Promise<R>;
 
-        const executeMiddlewares = (next: any, middleware: any) => middleware.execute.bind(middleware, message, next);
+        const executeHandler = (finalMessage: M): Promise<R> => {
+            return handler.handle(finalMessage) as Promise<R>;
+        };
 
-        const middlewareChain: (message: M) => Promise<R> = this.middlewares.reduceRight(
-            executeMiddlewares,
+        const middlewareChain = this.middlewares.reduceRight<
+            (message: M) => Promise<R>
+        >(
+            (next, middleware) => (msg) => middleware.execute(msg, next) as Promise<R>,
             executeHandler
         );
 
-        return (await middlewareChain(message)) as R;
+        return middlewareChain(message);
     }
 }

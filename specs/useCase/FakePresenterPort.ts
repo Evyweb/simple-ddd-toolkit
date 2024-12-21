@@ -1,3 +1,3 @@
 export interface FakePresenterPort {
-  presentName(name: string): void;
+    presentName(name: string): void;
 }

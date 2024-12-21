@@ -2,7 +2,7 @@ import {FakeCommand} from "./FakeCommand";
 import {Logger} from "@/logger/Logger";
 import {CommandHandler} from "@/bus/command/CommandHandler";
 
-export class FakeCommandHandler extends CommandHandler<FakeCommand, void> {
+export class FakeCommandHandler extends CommandHandler<FakeCommand> {
     constructor(private readonly logger: Logger) {
         super();
     }

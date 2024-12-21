@@ -1,14 +1,9 @@
-import {Logger} from "@/logger/Logger";
 import {DomainEvent} from "@/domainEvent/DomainEvent";
-import {IEventHandler} from "@/domainEvent/IEventHandler";
 
 export interface EventBusPort {
-    readonly logger: Logger;
-    readonly handlers: Record<string, (() => IEventHandler<DomainEvent<any>>)[]>;
+    dispatch<EventTypes extends DomainEvent>(domainEvent: EventTypes): Promise<void>;
 
-    on(eventType: string, handler: () => IEventHandler<DomainEvent<Record<string, any>>>): void;
+    dispatchEvents<EventTypes extends DomainEvent>(events: EventTypes[]): Promise<void>;
 
-    dispatch(domainEvent: DomainEvent<Record<string, any>>): Promise<void>;
-
-    dispatchEvents(events: DomainEvent<Record<string, any>>[]): Promise<void>;
+    dispatchEventsAsync<EventTypes extends DomainEvent>(events: EventTypes[]): void;
 }

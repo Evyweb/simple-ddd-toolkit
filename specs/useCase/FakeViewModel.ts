@@ -1,3 +1,3 @@
 export interface FakeViewModel {
-  newName: string;
+    newName: string;
 }

@@ -1,5 +1,6 @@
 import {Money} from "./Money";
 import {SomeInformation} from "./SomeInformation";
+import {OtherValueObject} from "./OtherValueObject";
 
 describe('[ValueObject]', () => {
     describe('When 2 value objects have same values', () => {
@@ -8,6 +9,20 @@ describe('[ValueObject]', () => {
                 // Arrange
                 const valueObject1 = Money.create({amount: 5, currency: '€'});
                 const valueObject2 = Money.create({amount: 5, currency: '€'});
+
+                // Act
+                const result = valueObject1.equals(valueObject2);
+
+                // Assert
+                expect(result).toEqual(true);
+            });
+        });
+
+        describe('When the values are null', () => {
+            it('should return true', () => {
+                // Arrange
+                const valueObject1 = OtherValueObject.create();
+                const valueObject2 = OtherValueObject.create();
 
                 // Act
                 const result = valueObject1.equals(valueObject2);
@@ -56,7 +71,7 @@ describe('[ValueObject]', () => {
             });
 
             // Act & Assert
-            expect(() => valueObject.get('information').author = 'fakeName2')
+            expect(() => valueObject.get('information')!.author = 'fakeName2')
                 .toThrowError(`Cannot assign to read only property 'author'`);
         });
     });
@@ -148,6 +163,27 @@ describe('[ValueObject]', () => {
                 // Assert
                 expect(result).toEqual(false);
             });
+        });
+    });
+
+    describe('When comparing an object with a primitive value', () => {
+        it('should return false', () => {
+            // Arrange
+            const valueObject1 = SomeInformation.create({
+                name: 'fakeName1',
+                information: {
+                    author: 'fakeName1',
+                    year: '2019-05-01',
+                },
+            });
+
+            const primitiveValue = "fakeName1";
+
+            // Act
+            const result = valueObject1.equals(primitiveValue as unknown as SomeInformation);
+
+            // Assert
+            expect(result).toEqual(false);
         });
     });
 });

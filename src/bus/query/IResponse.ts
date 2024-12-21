@@ -1,1 +1,1 @@
-export interface IResponse {}
+export type IResponse = object

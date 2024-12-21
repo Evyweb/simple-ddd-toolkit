@@ -1,4 +1,4 @@
 export interface UUIDData {
-  value: string;
-  isNew: boolean;
+    value: string;
+    isNew: boolean;
 }

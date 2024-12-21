@@ -1,3 +1,3 @@
 export interface IUseCase<Request> {
-  execute(request?: Request): Promise<void>;
+    execute(request?: Request): Promise<void>;
 }

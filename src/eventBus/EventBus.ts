@@ -7,9 +7,9 @@ export class EventBus implements EventBusPort {
     constructor(readonly logger: Logger) {
     }
 
-    readonly handlers: Record<string, (() => IEventHandler<DomainEvent<any>>)[]> = {};
+    readonly handlers: Record<string, (() => IEventHandler<DomainEvent>)[]> = {};
 
-    on(eventType: string, handler: () => IEventHandler<DomainEvent<any>>): void {
+    on(eventType: string, handler: () => IEventHandler<DomainEvent>): void {
         if (!this.handlers[eventType]) {
             this.handlers[eventType] = [];
         }
@@ -17,7 +17,7 @@ export class EventBus implements EventBusPort {
         this.handlers[eventType].push(handler);
     }
 
-    async dispatch(domainEvent: DomainEvent<any>): Promise<void> {
+    async dispatch(domainEvent: DomainEvent): Promise<void> {
         const handlers = this.handlers[domainEvent.eventType];
 
         if (!handlers) return;
@@ -34,13 +34,13 @@ export class EventBus implements EventBusPort {
         }
     }
 
-    async dispatchEvents(events: DomainEvent<any>[]) {
+    async dispatchEvents(events: DomainEvent[]) {
         for (const event of events) {
             await this.dispatch(event);
         }
     }
 
-    dispatchEventsAsync(events: DomainEvent<Record<string, any>>[]): void {
+    dispatchEventsAsync(events: DomainEvent[]): void {
         setImmediate(async () => {
             for (const event of events) {
                 await this.dispatch(event);

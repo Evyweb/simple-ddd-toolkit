@@ -1,3 +1,3 @@
-export interface Message {
+export type Message = {
     __TAG: string;
 }

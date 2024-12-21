@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "lint": "tsc --noEmit && eslint src/**/*.{ts,tsx} specs/**/*.{ts,tsx}",
+    "lint": "tsc --noEmit && eslint src/**/*.ts specs/**/*.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "changeset": "npx changeset",

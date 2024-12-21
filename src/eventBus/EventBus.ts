@@ -25,7 +25,7 @@ export class EventBus implements EventBusPort {
         this.logger.log(
             `[${domainEvent.occurredOn.toISOString()}] Event "${domainEvent.eventType}" occurred with ID "${
                 domainEvent.eventId
-            }". Metadata: ${JSON.stringify(domainEvent.metadata)}`
+            }". Payload: ${JSON.stringify(domainEvent.payload)} - Metadata: ${JSON.stringify(domainEvent.metadata)}`
         );
 
         for (const handlerFactory of handlers) {

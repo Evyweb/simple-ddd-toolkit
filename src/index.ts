@@ -12,6 +12,7 @@ export * from './bus/query/QueryHandler';
 export * from './domainEvent/DomainEvent';
 export * from './domainEvent/IEventHandler';
 export * from './domainEvent/Metadata';
+export * from './domainEvent/Payload';
 export * from './entity/Entity';
 export * from './errors/CustomError';
 export * from './errors/DomainError';

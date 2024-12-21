@@ -8,7 +8,7 @@ export class LogUsernameChangedCommandHandler implements ICommandHandler<LogUser
     constructor(private readonly logger: Logger) {
     }
 
-    async handle({userId, newName}: LogUsernameChangedCommand): Promise<void> {
-        this.logger.log(`User "${userId}" has a new name: "${newName}"`);
+    async handle({userId, oldName, newName}: LogUsernameChangedCommand): Promise<void> {
+        this.logger.log(`User "${oldName}" with ID: "${userId}" has a new name: "${newName}"`);
     }
 }

@@ -10,7 +10,7 @@ export class UsernameChangedEventHandler implements IEventHandler<UsernameUpdate
     }
 
     async handle(event: UsernameUpdatedEvent) {
-        const command = new LogUsernameChangedCommand(event.metadata.userId as string, event.metadata.newName as string);
+        const command = new LogUsernameChangedCommand(event.payload.userId as string, event.metadata.oldName as string, event.payload.newName as string);
         await this.commandBus.execute(command);
     }
 }

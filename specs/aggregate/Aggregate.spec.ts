@@ -34,7 +34,7 @@ describe('Aggregate', () => {
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'Jane Doe'));
+                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
                 aggregate.addEvent(new OtherEvent());
             });
 
@@ -51,9 +51,9 @@ describe('Aggregate', () => {
 
                     const [firstMessage, secondMessage] = logger.messages;
                     expect(firstMessage).toEqual(
-                        `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
+                        `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                     );
-                    expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                    expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
                 });
             });
 
@@ -80,9 +80,9 @@ describe('Aggregate', () => {
 
                         const [firstMessage, secondMessage] = logger.messages;
                         expect(firstMessage).toEqual(
-                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
+                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                         );
-                        expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                        expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
                     });
                 });
 
@@ -99,9 +99,9 @@ describe('Aggregate', () => {
 
                         const [firstMessage, secondMessage] = logger.messages;
                         expect(firstMessage).toEqual(
-                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Metadata: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"}`
+                            `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                         );
-                        expect(secondMessage).toEqual(`User "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                        expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
                     });
                 });
             });
@@ -115,7 +115,7 @@ describe('Aggregate', () => {
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'Jane Doe'));
+                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
 
                 // Act
                 aggregate.dispatchEvents(eventBus);

@@ -1,50 +1,64 @@
-import {EventBusPort} from "./EventBusPort";
-import {Logger} from "@/logger/Logger";
-import {DomainEvent} from "@/domainEvent/DomainEvent";
-import {IEventHandler} from "@/domainEvent/IEventHandler";
+import { EventBusPort } from "./EventBusPort"
+import { IEventMiddleware } from "./IEventMiddleware"
+import { DomainEvent } from "@/domainEvent/DomainEvent"
+import { IEventHandler } from "@/domainEvent/IEventHandler"
+
+type ChainFunction = (event: DomainEvent) => Promise<void>
 
 export class EventBus implements EventBusPort {
-    constructor(readonly logger: Logger) {
-    }
+    private middlewares: IEventMiddleware[] = []
+    private readonly handlers: Record<string, (() => IEventHandler<DomainEvent>)[]> = {}
 
-    readonly handlers: Record<string, (() => IEventHandler<DomainEvent>)[]> = {};
+    use(middleware: IEventMiddleware): void {
+        this.middlewares.push(middleware)
+    }
 
     on(eventType: string, handler: () => IEventHandler<DomainEvent>): void {
         if (!this.handlers[eventType]) {
-            this.handlers[eventType] = [];
+            this.handlers[eventType] = []
         }
-
-        this.handlers[eventType].push(handler);
+        this.handlers[eventType].push(handler)
     }
 
     async dispatch(domainEvent: DomainEvent): Promise<void> {
-        const handlers = this.handlers[domainEvent.eventType];
+        const handlers = this.handlers[domainEvent.eventType]
 
-        if (!handlers) return;
-
-        this.logger.log(
-            `[${domainEvent.occurredOn.toISOString()}] Event "${domainEvent.eventType}" occurred with ID "${
-                domainEvent.eventId
-            }". Payload: ${JSON.stringify(domainEvent.payload)} - Metadata: ${JSON.stringify(domainEvent.metadata)}`
-        );
-
-        for (const handlerFactory of handlers) {
-            const handler = handlerFactory();
-            await handler.handle(domainEvent);
+        const executeHandlers: ChainFunction = async (event: DomainEvent) => {
+            if (!handlers) return
+            for (const handlerFactory of handlers) {
+                const handler = handlerFactory()
+                await handler.handle(event)
+            }
         }
+
+        if (!handlers || handlers.length === 0) {
+            await executeHandlers(domainEvent)
+            return
+        }
+
+        const middlewareChain = this.middlewares.reduceRight<ChainFunction>(
+            (next, middleware) => {
+                return async (event: DomainEvent) => {
+                    await middleware.execute(event, next)
+                }
+            },
+            executeHandlers
+        )
+
+        await middlewareChain(domainEvent)
     }
 
-    async dispatchEvents(events: DomainEvent[]) {
+    async dispatchEvents(events: DomainEvent[]): Promise<void> {
         for (const event of events) {
-            await this.dispatch(event);
+            await this.dispatch(event)
         }
     }
 
     dispatchEventsAsync(events: DomainEvent[]): void {
         setImmediate(async () => {
             for (const event of events) {
-                await this.dispatch(event);
+                await this.dispatch(event)
             }
-        });
+        })
     }
 }

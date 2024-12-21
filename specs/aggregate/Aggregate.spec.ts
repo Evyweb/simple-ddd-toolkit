@@ -9,6 +9,7 @@ import {OtherEvent} from "./OtherEvent";
 import {UsernameChangedEventHandler} from "./UsernameChangedEventHandler";
 import {Command} from "@/bus/command/Command";
 import {Bus} from "@/bus/Bus";
+import {EventLoggingMiddleware} from "@/eventBus/EventLoggingMiddleware";
 
 describe('Aggregate', () => {
     let eventBus: EventBus;
@@ -17,7 +18,8 @@ describe('Aggregate', () => {
 
     beforeEach(() => {
         logger = new FakeLogger();
-        eventBus = new EventBus(logger);
+        eventBus = new EventBus();
+        eventBus.use(new EventLoggingMiddleware(logger));
         commandBus = new Bus<Command>();
     });
 

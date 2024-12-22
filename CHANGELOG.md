@@ -1,5 +1,12 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.19.0
+
+### Minor Changes
+
+- decoupling event bus from middleware
+- add payload for domain events
+
 ## 0.18.1
 
 ### Patch Changes

@@ -21,7 +21,7 @@ export class EventBus implements EventBusPort {
     }
 
     async dispatch(domainEvent: DomainEvent): Promise<void> {
-        const handlers = this.handlers[domainEvent.eventType]
+        const handlers = this.handlers[domainEvent.__TAG]
 
         const executeHandlers: ChainFunction = async (event: DomainEvent) => {
             if (!handlers) return

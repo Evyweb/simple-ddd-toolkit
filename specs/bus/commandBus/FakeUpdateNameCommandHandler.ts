@@ -3,6 +3,8 @@ import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
 import {CommandHandler} from "@/bus/command/CommandHandler";
 
 export class FakeUpdateNameCommandHandler extends CommandHandler<FakeUpdateNameCommand> {
+    readonly __TAG: string = 'FakeUpdateNameCommandHandler';
+
     constructor(private readonly logger: FakeLogger) {
         super();
     }

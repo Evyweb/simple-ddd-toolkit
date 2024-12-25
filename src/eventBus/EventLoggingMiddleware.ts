@@ -8,7 +8,7 @@ export class EventLoggingMiddleware implements IEventMiddleware {
 
     execute(event: DomainEvent, next: (event: DomainEvent) => Promise<void>): Promise<void> {
         this.logger.log(
-            `[${event.occurredOn.toISOString()}] Event "${event.eventType}" occurred with ID "${
+            `[${event.occurredOn.toISOString()}] Event "${event.__TAG}" occurred with ID "${
                 event.eventId
             }". Payload: ${JSON.stringify(event.payload)} - Metadata: ${JSON.stringify(event.metadata)}`
         );

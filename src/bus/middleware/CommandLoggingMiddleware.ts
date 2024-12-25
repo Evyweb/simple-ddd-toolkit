@@ -3,6 +3,8 @@ import {Logger} from "@/logger/Logger";
 import {Command} from "@/bus/command/Command";
 
 export class CommandLoggingMiddleware implements CommandMiddleware {
+    public readonly __TAG = "CommandLoggingMiddleware";
+
     constructor(
         private readonly logger: Logger,
         private readonly middlewareId: string

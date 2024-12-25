@@ -1,5 +1,5 @@
 export abstract class CustomError extends Error {
-    public readonly TAG_NAME: string = this.constructor.name;
+    public abstract readonly __TAG: string;
 
     protected constructor(message?: string) {
         super(message);

@@ -22,7 +22,7 @@ describe('[DomainError]', () => {
         const error = new AnyDomainError();
 
         // Assert
-        expect(error.TAG_NAME).toEqual('AnyDomainError');
+        expect(error.__TAG).toEqual('AnyDomainError');
     });
 
     it('should have a message', () => {

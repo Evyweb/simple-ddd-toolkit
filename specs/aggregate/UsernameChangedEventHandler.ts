@@ -5,6 +5,8 @@ import {type Command} from "@/bus/command/Command";
 import {type Bus} from "@/bus/Bus";
 
 export class UsernameChangedEventHandler implements IEventHandler<UsernameUpdatedEvent> {
+    public readonly __TAG = "UsernameChangedEventHandler";
+
     constructor(private readonly commandBus: Bus<Command>) {
 
     }

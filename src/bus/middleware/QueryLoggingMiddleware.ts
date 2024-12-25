@@ -4,6 +4,8 @@ import {Query} from "@/bus/query/Query";
 import {IMiddleware} from "@/bus/IMiddleware";
 
 export class QueryLoggingMiddleware implements IMiddleware<Query, IResponse> {
+    readonly __TAG = "QueryLoggingMiddleware";
+
     constructor(
         private readonly logger: Logger,
         private readonly middlewareId: string

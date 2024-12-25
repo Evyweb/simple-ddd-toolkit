@@ -1,7 +1,7 @@
 import {Logger} from "@/logger/Logger";
 import {IResponse} from "@/bus/query/IResponse";
 import {Query} from "@/bus/query/Query";
-import {IMiddleware} from "@/bus/IMiddleware";
+import {IMiddleware} from "@/bus/middleware/IMiddleware";
 
 export class QueryLoggingMiddleware implements IMiddleware<Query, IResponse> {
     readonly __TAG = "QueryLoggingMiddleware";

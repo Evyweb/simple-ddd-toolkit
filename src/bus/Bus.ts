@@ -1,5 +1,5 @@
 import {Message} from "@/bus/Message";
-import {IMiddleware} from "@/bus/IMiddleware";
+import {IMiddleware} from "@/bus/middleware/IMiddleware";
 import {IMessageHandler} from "@/bus/IMessageHandler";
 
 export class Bus<M extends Message> {

@@ -1,11 +1,12 @@
 import {LogUsernameChangedCommand} from "./LogUsernameChangedCommand";
 import {Logger} from "@/logger/Logger";
-import {ICommandHandler} from "@/bus/command/ICommandHandler";
+import {CommandHandler} from "@/bus/command/CommandHandler";
 
-export class LogUsernameChangedCommandHandler implements ICommandHandler<LogUsernameChangedCommand> {
+export class LogUsernameChangedCommandHandler extends CommandHandler<LogUsernameChangedCommand> {
     readonly __TAG = 'LogUsernameChangedCommandHandler';
 
     constructor(private readonly logger: Logger) {
+        super();
     }
 
     async handle({userId, oldName, newName}: LogUsernameChangedCommand): Promise<void> {

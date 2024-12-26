@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.20.0
+
+### Minor Changes
+
+- simplify API (breaking changes expected)
+
 ## 0.19.0
 
 ### Minor Changes

@@ -17,7 +17,15 @@
     "changeset:version": "npx changeset version",
     "publish:package": "npm run build && npx changeset publish"
   },
-  "keywords": [],
+  "keywords": [
+    "ddd",
+    "domain",
+    "driven",
+    "design",
+    "toolkit",
+    "simple",
+    "typescript"
+  ],
   "author": "Evyweb",
   "license": "MIT",
   "repository": {

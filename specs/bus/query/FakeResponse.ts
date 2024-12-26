@@ -1,5 +1,3 @@
-import {IResponse} from "@/bus/query/IResponse";
-
-export interface FakeResponse extends IResponse {
+export interface FakeResponse {
     upperCaseName: string;
 }

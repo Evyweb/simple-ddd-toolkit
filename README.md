@@ -852,20 +852,15 @@ To register a command handler with the command bus, you can use the `register` m
 import { Bus, Command } from "@evyweb/simple-ddd-toolkit";
 
 const commandBus = new Bus<Command>();
-commandBus.register(
-    "CreateCharacterCommand",
-    () => new CreateCharacterCommandHandler()
-);
+commandBus.register(() => new CreateCharacterCommandHandler());
 ```
+
 Make sure to use the `__TAG` property of the command as the key when registering the command handler. For example, if the command's `__TAG` is "CreateCharacterCommand", then the key should be "CreateCharacterCommand".
 
 You can also use an ioc container (like inversify or simple-ddd-toolkit) to resolve the command handler.
 
 ```typescript
-commandBus.register(
-  "CreateCharacterCommand",
-  () => container.get(DI.CreateCharacterCommandHandler)
-);
+commandBus.register(() => container.get(DI.CreateCharacterCommandHandler));
 ```
 
 # Query
@@ -988,10 +983,7 @@ To register a query handler with the query bus, you can use the `register` metho
 import { Bus, Query } from "@evyweb/simple-ddd-toolkit";
 
 const queryBus = new Bus<Query>();
-queryBus.register(
-  "LoadCharacterCreationDialogQuery",
-  () => new LoadCharacterCreationDialogQueryHandler()
-);
+queryBus.register(() => new LoadCharacterCreationDialogQueryHandler());
 ```
 
 **Make sure to use the `__TAG` property of the query as the key when registering the query handler.**
@@ -999,10 +991,7 @@ queryBus.register(
 You can also use an ioc container (like inversify or simple-ddd-toolkit) to resolve the query handler.
 
 ```typescript
-queryBus.register(
-  "LoadCharacterCreationDialogQuery",
-  () => container.get(DI.LoadCharacterCreationDialogQueryHandler)
-);
+queryBus.register(() => container.get(DI.LoadCharacterCreationDialogQueryHandler));
 ```
 
 # Middleware
@@ -1013,7 +1002,7 @@ It allows you to intercept commands and queries before they are processed by the
 
 ## How to create middleware
 
-You can create middlewares for both commands and queries by extending the `CommandMiddleware` and `QueryMiddleware` classes provided by the `simple-ddd-toolkit` package.
+You can create middlewares for both commands and queries by implementing the `Middleware<Command>` and `Middleware<Query>` interfaces provided by the `simple-ddd-toolkit` package.
 
 ### Command middleware
 
@@ -1021,16 +1010,13 @@ You can create middlewares for both commands and queries by extending the `Comma
 import { CommandMiddleware, Command } from "@evyweb/simple-ddd-toolkit";
 import { Logger } from "@/logger/Logger";
 
-export class CommandLoggingMiddleware implements CommandMiddleware {
+export class CommandLoggerMiddleware implements Middleware<Command> {
   constructor(
     private readonly logger: Logger,
     private readonly middlewareId: string
   ) {}
 
-  async execute<Response>(
-    command: Command,
-    next: (command: Command) => Promise<Response>
-  ): Promise<Response> {
+  async execute<T>(command: Command, next: (command: Command) => Promise<T>): Promise<T> {
     const date = new Date().toISOString();
     this.logger.log(
       `[${date}][${this.middlewareId}][${command.__TAG}] - ${JSON.stringify(
@@ -1048,16 +1034,13 @@ export class CommandLoggingMiddleware implements CommandMiddleware {
 import { QueryMiddleware, IResponse, Query } from "@evyweb/simple-ddd-toolkit";
 import { Logger } from "@/logger/Logger";
 
-export class QueryLoggingMiddleware implements QueryMiddleware {
+export class QueryLoggerMiddleware implements Middleware<Query> {
   constructor(
     private readonly logger: Logger,
     private readonly middlewareId: string
   ) {}
 
-  execute(
-    query: Query,
-    next: (query: Query) => Promise<IResponse>
-  ): Promise<IResponse> {
+  execute<T>(query: Query, next: (query: Query) => Promise<T>): Promise<T> {
     const date = new Date().toISOString();
     this.logger.log(
       `[${date}][${this.middlewareId}][${query.__TAG}] - ${JSON.stringify(
@@ -1069,15 +1052,15 @@ export class QueryLoggingMiddleware implements QueryMiddleware {
 }
 ```
 
-In these examples, the `CommandLoggingMiddleware` and `QueryLoggingMiddleware` classes log the command or query data before passing it to the next middleware or the command/query handler.
+In these examples, the `CommandLoggerMiddleware` and `QueryLoggerMiddleware` classes log the command or query data before passing it to the next middleware or the command/query handler.
 
 ## How to register middleware
 
 To register middleware with the command bus or query bus, you can use the `use` method provided by the bus.
 
 ```typescript
-commandBus.use(new CommandLoggingMiddleware(logger, "CommandLoggingMiddleware"));
-queryBus.use(new QueryLoggingMiddleware(logger, "QueryLoggingMiddleware"));
+commandBus.use(new CommandLoggerMiddleware(logger, "CommandLoggerMiddleware"));
+queryBus.use(new QueryLoggerMiddleware(logger, "QueryLoggerMiddleware"));
 ```
 
 **Middleware will be executed in the order they are registered.**
@@ -1085,8 +1068,8 @@ queryBus.use(new QueryLoggingMiddleware(logger, "QueryLoggingMiddleware"));
 But you can also use an ioc container to resolve the middleware.
 
 ```typescript
-commandBus.use(container.get(DI.CommandLoggingMiddleware));
-queryBus.use(container.get(DI.QueryLoggingMiddleware));
+commandBus.use(container.get(DI.CommandLoggerMiddleware));
+queryBus.use(container.get(DI.QueryLoggerMiddleware));
 ```
 
 # Event Bus

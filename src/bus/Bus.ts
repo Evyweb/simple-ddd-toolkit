@@ -1,17 +1,23 @@
 import {Message} from "@/bus/Message";
-import {IMiddleware} from "@/bus/middleware/IMiddleware";
+import {Middleware} from "@/bus/middleware/Middleware";
 import {IMessageHandler} from "@/bus/IMessageHandler";
 
 export class Bus<M extends Message> {
-    private handlers: Map<string, () => IMessageHandler<M, unknown>> = new Map();
-    private middlewares: IMiddleware<M, unknown>[] = [];
+    private handlers: Map<string, () => IMessageHandler<M>> = new Map();
+    private middlewares: Middleware<M>[] = [];
 
-    register<R>(key: string, handler: () => IMessageHandler<M, R>): void {
-        this.handlers.set(key, handler as () => IMessageHandler<M, unknown>);
+    register<R>(handlerFactory: () => IMessageHandler<M, R>): void {
+        const handler = handlerFactory();
+        if (!handler.__TAG) {
+            throw new Error(
+                "The handler must have a __TAG property to be registered."
+            );
+        }
+        this.handlers.set(handler.__TAG, handlerFactory as () => IMessageHandler<M>);
     }
 
-    use<R>(middleware: IMiddleware<M, R>): void {
-        this.middlewares.push(middleware as IMiddleware<M, unknown>);
+    use(middleware: Middleware<M>): void {
+        this.middlewares.push(middleware as Middleware<M>);
     }
 
     async execute<R>(message: M): Promise<R> {
@@ -19,7 +25,7 @@ export class Bus<M extends Message> {
         const handlerFactory = this.handlers.get(handlerName);
 
         if (!handlerFactory) {
-            throw new Error(`No handler registered for ${handlerName}`);
+            throw new Error(`No handler registered for ${message.__TAG}. Please check the __TAG property of both command and handler.`);
         }
 
         const handler = handlerFactory();
@@ -28,10 +34,8 @@ export class Bus<M extends Message> {
             return handler.handle(finalMessage) as Promise<R>;
         };
 
-        const middlewareChain = this.middlewares.reduceRight<
-            (message: M) => Promise<R>
-        >(
-            (next, middleware) => (msg) => middleware.execute(msg, next) as Promise<R>,
+        const middlewareChain = this.middlewares.reduceRight<(message: M) => Promise<R>>(
+            (next, middleware) => (msg) => middleware.execute(msg, next),
             executeHandler
         );
 

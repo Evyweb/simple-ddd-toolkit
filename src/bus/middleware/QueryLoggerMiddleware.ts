@@ -1,18 +1,15 @@
 import {Logger} from "@/logger/Logger";
-import {IResponse} from "@/bus/query/IResponse";
 import {Query} from "@/bus/query/Query";
-import {IMiddleware} from "@/bus/middleware/IMiddleware";
+import {Middleware} from "@/bus/middleware/Middleware";
 
-export class QueryLoggingMiddleware implements IMiddleware<Query, IResponse> {
-    readonly __TAG = "QueryLoggingMiddleware";
-
+export class QueryLoggerMiddleware implements Middleware<Query> {
     constructor(
         private readonly logger: Logger,
         private readonly middlewareId: string
     ) {
     }
 
-    execute(query: Query, next: (query: Query) => Promise<IResponse>): Promise<IResponse> {
+    execute<T>(query: Query, next: (query: Query) => Promise<T>): Promise<T> {
         const date = new Date().toISOString();
         this.logger.log(`[${date}][${this.middlewareId}][${query.__TAG}] - ${JSON.stringify(query)}`);
         return next(query);

@@ -1,1 +1,1 @@
-export type IResponse = object
+export type Response = object

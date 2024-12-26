@@ -1,11 +1,12 @@
 import {FakeLogger} from "../../logger/FakeLogger";
 import {FakeUpdateNameCommandHandler} from "./FakeUpdateNameCommandHandler";
-import {CommandLoggingMiddleware} from "@/bus/middleware/CommandLoggingMiddleware";
+import {CommandLoggerMiddleware} from "@/bus/middleware/CommandLoggerMiddleware";
 import {FakeUpdateNameWithReturnedValueCommandHandler} from "./FakeUpdateNameWithReturnedValueCommandHandler";
 import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
 import {FakeUpdateNameWithReturnedValueCommand} from "./FakeUpdateNameWithReturnedValueCommand";
 import {Command} from "@/bus/command/Command";
 import {Bus} from "@/bus/Bus";
+import {FakeInvalidCommandHandler} from "./FakeInvalidCommandHandler";
 
 describe('[CommandBus]', () => {
     beforeEach(() => {
@@ -17,7 +18,7 @@ describe('[CommandBus]', () => {
             // Arrange
             const logger = new FakeLogger();
             const commandBus = new Bus<Command>();
-            commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
+            commandBus.register(() => new FakeUpdateNameCommandHandler(logger));
 
             // Act
             await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -32,7 +33,7 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new Bus<Command>();
-                commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
+                commandBus.register(() => new FakeUpdateNameCommandHandler(logger));
 
                 // Act
                 const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
@@ -47,14 +48,29 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new Bus<Command>();
-                commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware'));
-                commandBus.register('FakeUpdateNameWithReturnedValueCommandHandler', () => new FakeUpdateNameWithReturnedValueCommandHandler(logger));
+                commandBus.use(new CommandLoggerMiddleware(logger, 'Middleware'));
+                commandBus.register(() => new FakeUpdateNameWithReturnedValueCommandHandler(logger));
 
                 // Act
                 const result = await commandBus.execute<string>(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
 
                 // Assert
                 expect(result).toEqual<string>('NEW NAME');
+            });
+        });
+
+        describe("When the handler does not have a __TAG property", () => {
+            it("should throw an error", () => {
+                // Arrange
+                const commandBus = new Bus<Command>();
+
+                // Act
+                const registration = () => commandBus.register(() => new FakeInvalidCommandHandler());
+
+                // Assert
+                expect(registration).toThrowError(
+                    "The handler must have a __TAG property to be registered."
+                );
             });
         });
     });
@@ -65,7 +81,7 @@ describe('[CommandBus]', () => {
             const command = new FakeUpdateNameCommand('NEW NAME');
             const commandBus = new Bus<Command>();
 
-            const errorMessage = `No handler registered for ${command.__TAG}`;
+            const errorMessage = `No handler registered for ${command.__TAG}. Please check the __TAG property of both command and handler.`;
 
             // Act & Assert
             expect(() => commandBus.execute(command)).rejects.toThrow(errorMessage);
@@ -78,10 +94,10 @@ describe('[CommandBus]', () => {
             const command = new FakeUpdateNameCommand('NEW NAME');
             const logger = new FakeLogger();
             const commandBus = new Bus<Command>();
-            commandBus.register('FakeUpdateNameCommandHandler', () => new FakeUpdateNameCommandHandler(logger));
+            commandBus.register(() => new FakeUpdateNameCommandHandler(logger));
 
-            commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 1'));
-            commandBus.use(new CommandLoggingMiddleware(logger, 'Middleware 2'));
+            commandBus.use(new CommandLoggerMiddleware(logger, 'Middleware 1'));
+            commandBus.use(new CommandLoggerMiddleware(logger, 'Middleware 2'));
 
             // Act
             await commandBus.execute(command);

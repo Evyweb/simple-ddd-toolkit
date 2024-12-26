@@ -11,8 +11,9 @@ A simple Domain Driven Design Toolkit created to help developers understand how 
 
 This toolkit is not a library, it's just a set of classes and interfaces that you can use, and it has no dependency.
 
-Note: This toolkit is still under development and not intended to be used in production. All classes and interfaces are subject to change.
-
+🚧🦺
+**WARNING: This toolkit is still under development and not intended to be used in production. All classes and interfaces are subject to change and may provoke breaking changes**.
+🦺🚧
 ## Installation
 
 ```bash

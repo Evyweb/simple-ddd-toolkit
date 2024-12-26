@@ -37,7 +37,7 @@ describe('Aggregate', () => {
                 });
 
                 aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
-                aggregate.addEvent(new OtherEvent());
+                aggregate.addEvent(new OtherEvent({ eventId: '266e27fe-1c3f-4be6-8646-358e830544d4'}));
             });
 
             describe('When the dispatch is done by the event bus', () => {

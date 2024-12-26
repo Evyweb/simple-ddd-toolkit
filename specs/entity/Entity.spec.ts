@@ -86,7 +86,7 @@ describe('Entity', () => {
     describe('When ID is new', () => {
         it('should return true', () => {
             // Arrange
-            const id = UUID.create();
+            const id = UUID.create('123e4567-e89b-12d3-a456-426614174000');
             const entity = FakeUserEntity.create({id, name: 'fakeName'});
 
             // Act
@@ -100,7 +100,7 @@ describe('Entity', () => {
     describe('When ID is not new', () => {
         it('should return false', () => {
             // Arrange
-            const id = UUID.createFrom('EXISTING-ID');
+            const id = UUID.createFrom('123e4567-e89b-12d3-a456-426614174000');
             const entity = FakeUserEntity.create({id, name: 'fakeName'});
 
             // Act

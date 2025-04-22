@@ -22,21 +22,21 @@ npm install --save @evyweb/simple-ddd-toolkit
 
 ## Features
 
-- [x] Aggregate
-- [x] Command
-- [x] Command handler
-- [x] Command bus
-- [x] Domain events
-- [x] Entity
-- [x] Errors
-- [x] Event bus
-- [x] Middleware
-- [x] Query
-- [x] Query handler
-- [x] Query bus
-- [x] Result
-- [x] Use case
-- [x] Value object
+- [x] Aggregate - A cluster of domain objects that can be treated as a single unit
+- [x] Command - A request to perform an action or change the state of the system
+- [x] Command handler - Processes commands and updates the system's state
+- [x] Command bus - Routes commands to the appropriate command handlers
+- [x] Domain events - Notifications about changes in the domain
+- [x] Entity - An object with a distinct identity that runs throughout its lifecycle
+- [x] Errors - Custom error types for domain and technical errors
+- [x] Event bus - Decouples components by allowing them to communicate through events
+- [x] Middleware - Adds additional behavior to commands and queries
+- [x] Query - A request for data from the system
+- [x] Query handler - Processes queries and returns the requested information
+- [x] Query bus - Routes queries to the appropriate query handlers
+- [x] Result - A pattern to handle errors and success cases in a more explicit way
+- [x] Use case - Encapsulates application-specific business rules
+- [x] Value object - An object that measures, quantifies, or describes aspects of a domain
 
 # Value Object
 
@@ -110,7 +110,7 @@ import { ValueObject } from "@evyweb/simple-ddd-toolkit";
 export class Color extends ValueObject<{ red: number; green: number; blue: number }> {}
 ```
 
-You can also create an interface to define the `red`, `green`, and `blue` values.
+You can also create a type or an interface to define the `red`, `green`, and `blue` values.
 
 ```typescript
 interface RGBColor {
@@ -401,9 +401,11 @@ This way, you can create different types of errors based on the context in which
 To create a domain error, you can extend the `DomainError` class provided by the `simple-ddd-toolkit` package.
 
 ```typescript
-import { DomainError } from "@/errors/DomainError";
+import { DomainError } from "@evyweb/simple-ddd-toolkit";
 
 export class AnyDomainError extends DomainError {
+  public readonly __TAG = "AnyDomainError";
+
   constructor() {
     super("Any domain related error message"); // Can be also a translation key
   }
@@ -429,9 +431,11 @@ These are helper methods that allow you to quickly determine if an error is a do
 To create a technical error, you can extend the `TechnicalError` class provided by the `simple-ddd-toolkit` package.
 
 ```typescript
-import { TechnicalError } from "@/errors/TechnicalError";
+import { TechnicalError } from "@evyweb/simple-ddd-toolkit";
 
 export class AnyTechnicalError extends TechnicalError {
+  public readonly __TAG = "AnyTechnicalError";
+
   constructor() {
     super("Any technical related error message"); // Can be also a translation key
   }
@@ -455,9 +459,11 @@ if (error.isDomainError()) {
 The `CustomError` class provided by the `simple-ddd-toolkit` package can be used to create custom errors.
 
 ```typescript
-import { CustomError } from "@/errors/CustomError";
+import { CustomError } from "@evyweb/simple-ddd-toolkit";
 
 export class AnyCustomError extends CustomError {
+  public readonly __TAG = "AnyCustomError";
+
   constructor() {
     super("Any custom error message"); // Can be also a translation key
   }
@@ -472,7 +478,9 @@ export class AnyCustomError extends CustomError {
 }
 ```
 
-When you define the custom error class, you will need to override the `isDomainError` and `isTechnicalError` methods to specify the type of error.
+When you define the custom error class, you will need to:
+1. Define a `__TAG` property to identify the error type
+2. Override the `isDomainError` and `isTechnicalError` methods to specify the type of error
 
 # Entity
 
@@ -702,30 +710,34 @@ To create a domain event, you can extend the `DomainEvent` class provided by the
 
 ```typescript
 import { DomainEvent } from "@evyweb/simple-ddd-toolkit";
+import { v4 as uuidv4 } from 'uuid';
 
-interface Metadata {
-  orderId: string;
-  productId: string;
-  quantity: string;
-}
+export class ProductAddedToOrderEvent extends DomainEvent {
+  public readonly __TAG = "ProductAddedToOrderEvent";
 
-export class ProductAddedToOrderEvent extends DomainEvent<Metadata> {
   constructor(
     public readonly orderId: string,
     public readonly productId: string,
     public readonly quantity: number
   ) {
-    super();
+    super({
+      eventId: uuidv4(),
+      metadata: {
+        orderId,
+        productId,
+        quantity: quantity.toString()
+      }
+    });
   }
 }
 ```
 
 In this example, the `ProductAddedToOrderEvent` class extends the `DomainEvent` class and defines the metadata for the event.
 
-When creating a `DomainEvent`, the following data are available and can be overridden if needed:
+When creating a `DomainEvent`, the following data are available and can be provided in the constructor:
 
-- **eventId**: A unique identifier for the event. Generated automatically if not provided.
-- **eventType**: The type of the event, by default it is the constructor name.
+- **eventId**: A unique identifier for the event. Required when creating a domain event.
+- **__TAG**: The type of the event, must be defined as a property in the class.
 - **occurredOn**: The date and time when the event occurred. Generated automatically if not provided.
 - **metadata**: Additional data related to the event. Empty by default.
 - **payload**: The data related to the event. Empty by default
@@ -827,7 +839,7 @@ export class CreateCharacterCommandHandler extends CommandHandler<
 }
 ```
 
-It is also important to define the `__TAG` property for each command handler. This tag is used to identify the command handler.
+It is important to define the `__TAG` property for each command handler. This tag is used to identify the command handler and must match the pattern `{CommandName}Handler` where `{CommandName}` is the `__TAG` property of the command.
 
 Most of the time, a command handler will not return anything, so the second type parameter of the `CommandHandler` class is `void`.
 But it can return a value if needed (e.g., the id of the created element).
@@ -930,7 +942,7 @@ export class LoadCharacterCreationDialogQueryHandler extends QueryHandler<
 }
 ```
 
-It is also important to define the `__TAG` property for each query handler. This tag is used to identify the query handler.
+It is important to define the `__TAG` property for each query handler. This tag is used to identify the query handler and must match the pattern `{QueryName}Handler` where `{QueryName}` is the `__TAG` property of the query.
 
 The `LoadCharacterCreationDialogQueryHandler` class extends the `QueryHandler` class and defines the response type as `LoadCharacterCreationDialogResponse`.
 The response is also known as a ViewModel.
@@ -1008,8 +1020,8 @@ You can create middlewares for both commands and queries by implementing the `Mi
 ### Command middleware
 
 ```typescript
-import { CommandMiddleware, Command } from "@evyweb/simple-ddd-toolkit";
-import { Logger } from "@/logger/Logger";
+import { Middleware, Command } from "@evyweb/simple-ddd-toolkit";
+import { Logger } from "@evyweb/simple-ddd-toolkit";
 
 export class CommandLoggerMiddleware implements Middleware<Command> {
   constructor(
@@ -1032,8 +1044,8 @@ export class CommandLoggerMiddleware implements Middleware<Command> {
 ### Query middleware
 
 ```typescript
-import { QueryMiddleware, IResponse, Query } from "@evyweb/simple-ddd-toolkit";
-import { Logger } from "@/logger/Logger";
+import { Middleware, Query } from "@evyweb/simple-ddd-toolkit";
+import { Logger } from "@evyweb/simple-ddd-toolkit";
 
 export class QueryLoggerMiddleware implements Middleware<Query> {
   constructor(

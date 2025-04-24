@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.20.2
+
+### Patch Changes
+
+- biome migration
+
 ## 0.20.1
 
 ### Patch Changes

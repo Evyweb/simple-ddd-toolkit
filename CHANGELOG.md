@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.20.1
+
+### Patch Changes
+
+- fix outdated docs
+
 ## 0.20.0
 
 ### Minor Changes

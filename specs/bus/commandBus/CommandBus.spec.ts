@@ -33,14 +33,10 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new Bus<Command>();
-                commandBus.register(
-                    () => new FakeUpdateNameCommandHandler(logger)
-                );
+                commandBus.register(() => new FakeUpdateNameCommandHandler(logger));
 
                 // Act
-                const result = await commandBus.execute(
-                    new FakeUpdateNameCommand('NEW NAME')
-                );
+                const result = await commandBus.execute(new FakeUpdateNameCommand('NEW NAME'));
 
                 // Assert
                 expect(result).toBeUndefined();
@@ -52,20 +48,11 @@ describe('[CommandBus]', () => {
                 // Arrange
                 const logger = new FakeLogger();
                 const commandBus = new Bus<Command>();
-                commandBus.use(
-                    new CommandLoggerMiddleware(logger, 'Middleware')
-                );
-                commandBus.register(
-                    () =>
-                        new FakeUpdateNameWithReturnedValueCommandHandler(
-                            logger
-                        )
-                );
+                commandBus.use(new CommandLoggerMiddleware(logger, 'Middleware'));
+                commandBus.register(() => new FakeUpdateNameWithReturnedValueCommandHandler(logger));
 
                 // Act
-                const result = await commandBus.execute<string>(
-                    new FakeUpdateNameWithReturnedValueCommand('NEW NAME')
-                );
+                const result = await commandBus.execute<string>(new FakeUpdateNameWithReturnedValueCommand('NEW NAME'));
 
                 // Assert
                 expect(result).toEqual<string>('NEW NAME');
@@ -78,13 +65,10 @@ describe('[CommandBus]', () => {
                 const commandBus = new Bus<Command>();
 
                 // Act
-                const registration = () =>
-                    commandBus.register(() => new FakeInvalidCommandHandler());
+                const registration = () => commandBus.register(() => new FakeInvalidCommandHandler());
 
                 // Assert
-                expect(registration).toThrowError(
-                    'The handler must have a __TAG property to be registered.'
-                );
+                expect(registration).toThrowError('The handler must have a __TAG property to be registered.');
             });
         });
     });
@@ -98,9 +82,7 @@ describe('[CommandBus]', () => {
             const errorMessage = `No handler registered for ${command.__TAG}. Please check the __TAG property of both command and handler.`;
 
             // Act & Assert
-            await expect(() => commandBus.execute(command)).rejects.toThrow(
-                errorMessage
-            );
+            await expect(() => commandBus.execute(command)).rejects.toThrow(errorMessage);
         });
     });
 

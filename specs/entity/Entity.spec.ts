@@ -75,9 +75,7 @@ describe('Entity', () => {
             entity.set('name', 'newFakeName');
 
             // Assert
-            expect(entity.get('id').get('value')).toEqual(
-                '11111111-1111-1111-1111-111111111111'
-            );
+            expect(entity.get('id').get('value')).toEqual('11111111-1111-1111-1111-111111111111');
             expect(entity.get('name')).toEqual('newFakeName');
         });
     });

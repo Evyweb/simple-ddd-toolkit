@@ -188,9 +188,7 @@ describe('[ValueObject]', () => {
             const primitiveValue = 'fakeName1';
 
             // Act
-            const result = valueObject1.equals(
-                primitiveValue as unknown as SomeInformation
-            );
+            const result = valueObject1.equals(primitiveValue as unknown as SomeInformation);
 
             // Assert
             expect(result).toEqual(false);

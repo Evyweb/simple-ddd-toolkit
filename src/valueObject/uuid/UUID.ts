@@ -2,8 +2,7 @@ import { ValueObject } from '../ValueObject';
 import type { UUIDData } from './UUIDData';
 
 export class UUID extends ValueObject<UUIDData> {
-    public static readonly UUID_PATTERN =
-        /^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/;
+    public static readonly UUID_PATTERN = /^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/;
 
     static create(value: string, isNew = true): UUID {
         if (!UUID.isValid(value)) {

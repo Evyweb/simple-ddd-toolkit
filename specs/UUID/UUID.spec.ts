@@ -91,12 +91,8 @@ describe('UUID', () => {
 
         describe('When a UUID is created with a value', () => {
             it('should return false', () => {
-                expect(
-                    UuidFrom('123e4567-e89b-12d3-a456-426614174000').isNew()
-                ).toBe(false);
-                expect(
-                    Uuid('123e4567-e89b-12d3-a456-426614174000', false).isNew()
-                ).toBe(false);
+                expect(UuidFrom('123e4567-e89b-12d3-a456-426614174000').isNew()).toBe(false);
+                expect(Uuid('123e4567-e89b-12d3-a456-426614174000', false).isNew()).toBe(false);
             });
         });
     });

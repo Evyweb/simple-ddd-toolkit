@@ -10,9 +10,7 @@ export class QueryLoggerMiddleware implements Middleware<Query> {
 
     execute<T>(query: Query, next: (query: Query) => Promise<T>): Promise<T> {
         const date = new Date().toISOString();
-        this.logger.log(
-            `[${date}][${this.middlewareId}][${query.__TAG}] - ${JSON.stringify(query)}`
-        );
+        this.logger.log(`[${date}][${this.middlewareId}][${query.__TAG}] - ${JSON.stringify(query)}`);
         return next(query);
     }
 }

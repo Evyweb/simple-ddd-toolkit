@@ -8,15 +8,11 @@ export class Result<ValueType, ErrorType extends Error> {
         this.result = result;
     }
 
-    public static ok<ValueType, ErrorType extends Error>(
-        value: ValueType
-    ): Result<ValueType, ErrorType> {
+    public static ok<ValueType, ErrorType extends Error>(value: ValueType): Result<ValueType, ErrorType> {
         return new Result<ValueType, ErrorType>({ _tag: 'success', value });
     }
 
-    public static fail<ValueType, ErrorType extends Error>(
-        error: ErrorType
-    ): Result<ValueType, ErrorType> {
+    public static fail<ValueType, ErrorType extends Error>(error: ErrorType): Result<ValueType, ErrorType> {
         return new Result<ValueType, ErrorType>({ _tag: 'failure', error });
     }
 

@@ -2,9 +2,7 @@ import type { ICommandHandler } from '@/bus/command/ICommandHandler';
 import type { FakeLogger } from '../../logger/FakeLogger';
 import type { FakeUpdateNameCommand } from './FakeUpdateNameCommand';
 
-export class FakeUpdateNameWithReturnedValueCommandHandler
-    implements ICommandHandler<FakeUpdateNameCommand, string>
-{
+export class FakeUpdateNameWithReturnedValueCommandHandler implements ICommandHandler<FakeUpdateNameCommand, string> {
     readonly __TAG = 'FakeUpdateNameWithReturnedValueCommandHandler';
 
     constructor(private readonly logger: FakeLogger) {}

@@ -3,9 +3,7 @@ import { Entity } from '@/entity/Entity';
 import type { EventBusPort } from '@/eventBus/EventBusPort';
 import type { UUID } from '@/valueObject/uuid/UUID';
 
-export abstract class Aggregate<
-    EntityData extends { id: UUID },
-> extends Entity<EntityData> {
+export abstract class Aggregate<EntityData extends { id: UUID }> extends Entity<EntityData> {
     private domainEvents: DomainEvent[] = [];
 
     addEvent(domainEvent: DomainEvent): void {

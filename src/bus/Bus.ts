@@ -9,14 +9,9 @@ export class Bus<M extends Message> {
     register<R>(handlerFactory: () => IMessageHandler<M, R>): void {
         const handler = handlerFactory();
         if (!handler.__TAG) {
-            throw new Error(
-                'The handler must have a __TAG property to be registered.'
-            );
+            throw new Error('The handler must have a __TAG property to be registered.');
         }
-        this.handlers.set(
-            handler.__TAG,
-            handlerFactory as () => IMessageHandler<M>
-        );
+        this.handlers.set(handler.__TAG, handlerFactory as () => IMessageHandler<M>);
     }
 
     use(middleware: Middleware<M>): void {
@@ -39,9 +34,7 @@ export class Bus<M extends Message> {
             return handler.handle(finalMessage) as Promise<R>;
         };
 
-        const middlewareChain = this.middlewares.reduceRight<
-            (message: M) => Promise<R>
-        >(
+        const middlewareChain = this.middlewares.reduceRight<(message: M) => Promise<R>>(
             (next, middleware) => (msg) => middleware.execute(msg, next),
             executeHandler
         );

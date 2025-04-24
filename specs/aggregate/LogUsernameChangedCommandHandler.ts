@@ -9,13 +9,7 @@ export class LogUsernameChangedCommandHandler extends CommandHandler<LogUsername
         super();
     }
 
-    async handle({
-        userId,
-        oldName,
-        newName,
-    }: LogUsernameChangedCommand): Promise<void> {
-        this.logger.log(
-            `User "${oldName}" with ID: "${userId}" has a new name: "${newName}"`
-        );
+    async handle({ userId, oldName, newName }: LogUsernameChangedCommand): Promise<void> {
+        this.logger.log(`User "${oldName}" with ID: "${userId}" has a new name: "${newName}"`);
     }
 }

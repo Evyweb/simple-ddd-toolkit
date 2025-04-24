@@ -4,9 +4,7 @@ import type { IEventHandler } from '@/domainEvent/IEventHandler';
 import { LogUsernameChangedCommand } from './LogUsernameChangedCommand';
 import type { UsernameUpdatedEvent } from './UsernameUpdatedEvent';
 
-export class UsernameChangedEventHandler
-    implements IEventHandler<UsernameUpdatedEvent>
-{
+export class UsernameChangedEventHandler implements IEventHandler<UsernameUpdatedEvent> {
     public readonly __TAG = 'UsernameChangedEventHandler';
 
     constructor(private readonly commandBus: Bus<Command>) {}

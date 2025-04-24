@@ -10,9 +10,7 @@ export class FakeInvalidCommand extends Command {
     }
 }
 
-export class FakeInvalidCommandHandler
-    implements ICommandHandler<FakeUpdateNameCommand, string>
-{
+export class FakeInvalidCommandHandler implements ICommandHandler<FakeUpdateNameCommand, string> {
     readonly __TAG: string = '';
 
     handle(command: FakeInvalidCommand): Promise<string> {

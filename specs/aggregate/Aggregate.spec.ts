@@ -28,26 +28,15 @@ describe('Aggregate', () => {
             let aggregate: FakeUserAggregate;
 
             beforeEach(() => {
-                commandBus.register(
-                    () => new LogUsernameChangedCommandHandler(logger)
-                );
-                eventBus.on(
-                    FakeUserEvents.USER_NAME_UPDATED,
-                    () => new UsernameChangedEventHandler(commandBus)
-                );
+                commandBus.register(() => new LogUsernameChangedCommandHandler(logger));
+                eventBus.on(FakeUserEvents.USER_NAME_UPDATED, () => new UsernameChangedEventHandler(commandBus));
 
                 aggregate = FakeUserAggregate.create({
                     id: UuidFrom('15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a'),
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(
-                    new UsernameUpdatedEvent(
-                        aggregate.id(),
-                        'John Doe',
-                        'Jane Doe'
-                    )
-                );
+                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
                 aggregate.addEvent(
                     new OtherEvent({
                         eventId: '266e27fe-1c3f-4be6-8646-358e830544d4',
@@ -138,13 +127,7 @@ describe('Aggregate', () => {
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(
-                    new UsernameUpdatedEvent(
-                        aggregate.id(),
-                        'John Doe',
-                        'Jane Doe'
-                    )
-                );
+                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
 
                 // Act
                 aggregate.dispatchEvents(eventBus);

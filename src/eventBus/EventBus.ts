@@ -7,10 +7,7 @@ type ChainFunction = (event: DomainEvent) => Promise<void>;
 
 export class EventBus implements EventBusPort {
     private middlewares: IEventMiddleware[] = [];
-    private readonly handlers: Record<
-        string,
-        (() => IEventHandler<DomainEvent>)[]
-    > = {};
+    private readonly handlers: Record<string, (() => IEventHandler<DomainEvent>)[]> = {};
 
     use(middleware: IEventMiddleware): void {
         this.middlewares.push(middleware);
@@ -39,14 +36,11 @@ export class EventBus implements EventBusPort {
             return;
         }
 
-        const middlewareChain = this.middlewares.reduceRight<ChainFunction>(
-            (next, middleware) => {
-                return async (event: DomainEvent) => {
-                    await middleware.execute(event, next);
-                };
-            },
-            executeHandlers
-        );
+        const middlewareChain = this.middlewares.reduceRight<ChainFunction>((next, middleware) => {
+            return async (event: DomainEvent) => {
+                await middleware.execute(event, next);
+            };
+        }, executeHandlers);
 
         await middlewareChain(domainEvent);
     }

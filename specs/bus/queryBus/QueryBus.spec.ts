@@ -34,9 +34,7 @@ describe('[QueryBus]', () => {
             const query = new FakeViewCurrentNameQuery('Current name');
 
             // Act & Assert
-            await expect(queryBus.execute(query)).rejects.toThrow(
-                'No handler registered for FakeViewCurrentNameQuery'
-            );
+            await expect(queryBus.execute(query)).rejects.toThrow('No handler registered for FakeViewCurrentNameQuery');
         });
     });
 

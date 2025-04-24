@@ -1,14 +1,14 @@
-import {Money} from "./Money";
-import {SomeInformation} from "./SomeInformation";
-import {OtherValueObject} from "./OtherValueObject";
+import { Money } from './Money';
+import { OtherValueObject } from './OtherValueObject';
+import { SomeInformation } from './SomeInformation';
 
 describe('[ValueObject]', () => {
     describe('When 2 value objects have same values', () => {
         describe('When the values are simple', () => {
             it('should return true', () => {
                 // Arrange
-                const valueObject1 = Money.create({amount: 5, currency: '€'});
-                const valueObject2 = Money.create({amount: 5, currency: '€'});
+                const valueObject1 = Money.create({ amount: 5, currency: '€' });
+                const valueObject2 = Money.create({ amount: 5, currency: '€' });
 
                 // Act
                 const result = valueObject1.equals(valueObject2);
@@ -71,8 +71,13 @@ describe('[ValueObject]', () => {
             });
 
             // Act & Assert
-            expect(() => valueObject.get('information')!.author = 'fakeName2')
-                .toThrowError(`Cannot assign to read only property 'author'`);
+            expect(() => {
+                const information = valueObject.get('information') as {
+                    author: string;
+                    year?: string;
+                };
+                information.author = 'fakeName2';
+            }).toThrowError(`Cannot assign to read only property 'author'`);
         });
     });
 
@@ -80,8 +85,11 @@ describe('[ValueObject]', () => {
         describe('When the values are simple', () => {
             it('should return true', () => {
                 // Arrange
-                const valueObject1 = Money.create({amount: 5, currency: '€'});
-                const valueObject2 = Money.create({amount: 10, currency: '$'});
+                const valueObject1 = Money.create({ amount: 5, currency: '€' });
+                const valueObject2 = Money.create({
+                    amount: 10,
+                    currency: '$',
+                });
 
                 // Act
                 const result = valueObject1.equals(valueObject2);
@@ -155,7 +163,7 @@ describe('[ValueObject]', () => {
                     },
                 });
 
-                const valueObject2 = undefined!;
+                const valueObject2 = undefined as unknown as SomeInformation;
 
                 // Act
                 const result = valueObject1.equals(valueObject2);
@@ -177,10 +185,12 @@ describe('[ValueObject]', () => {
                 },
             });
 
-            const primitiveValue = "fakeName1";
+            const primitiveValue = 'fakeName1';
 
             // Act
-            const result = valueObject1.equals(primitiveValue as unknown as SomeInformation);
+            const result = valueObject1.equals(
+                primitiveValue as unknown as SomeInformation
+            );
 
             // Assert
             expect(result).toEqual(false);

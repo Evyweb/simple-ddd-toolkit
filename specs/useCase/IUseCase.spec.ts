@@ -1,6 +1,6 @@
-import {FakePresenter} from "./FakePresenter";
-import {FakeUseCase} from "./FakeUseCase";
-import {FakeCommand} from "../bus/command/FakeCommand";
+import { FakeCommand } from '../bus/command/FakeCommand';
+import { FakePresenter } from './FakePresenter';
+import { FakeUseCase } from './FakeUseCase';
 
 describe('When a use case is executed', () => {
     it('should correctly execute the use case', async () => {

@@ -1,15 +1,15 @@
-import {IEventMiddleware} from "./IEventMiddleware"
-import {DomainEvent} from "@/domainEvent/DomainEvent"
-import {IEventHandler} from "@/domainEvent/IEventHandler"
+import type { DomainEvent } from '@/domainEvent/DomainEvent';
+import type { IEventHandler } from '@/domainEvent/IEventHandler';
+import type { IEventMiddleware } from './IEventMiddleware';
 
 export interface EventBusPort {
-    use(middleware: IEventMiddleware): void
+    use(middleware: IEventMiddleware): void;
 
-    on(eventType: string, handler: () => IEventHandler<DomainEvent>): void
+    on(eventType: string, handler: () => IEventHandler<DomainEvent>): void;
 
-    dispatch(domainEvent: DomainEvent): Promise<void>
+    dispatch(domainEvent: DomainEvent): Promise<void>;
 
-    dispatchEvents(events: DomainEvent[]): Promise<void>
+    dispatchEvents(events: DomainEvent[]): Promise<void>;
 
-    dispatchEventsAsync(events: DomainEvent[]): void
+    dispatchEventsAsync(events: DomainEvent[]): void;
 }

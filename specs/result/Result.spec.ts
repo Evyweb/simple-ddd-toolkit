@@ -1,4 +1,4 @@
-import {Result} from "@/result/Result";
+import { Result } from '@/result/Result';
 
 describe('Result', () => {
     describe('When an "ok" Result is created', () => {

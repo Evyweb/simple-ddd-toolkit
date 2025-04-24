@@ -1,10 +1,10 @@
-import {FakeViewCurrentNameQuery} from "../query/FakeViewCurrentNameQuery";
-import {FakeViewCurrentNameQueryHandler} from "../query/FakeViewCurrentNameQueryHandler";
-import {FakeResponse} from "../query/FakeResponse";
-import {FakeLogger} from "../../logger/FakeLogger";
-import {QueryLoggerMiddleware} from "@/bus/middleware/QueryLoggerMiddleware";
-import {Bus} from "@/bus/Bus";
-import {Query} from "@/bus/query/Query";
+import { Bus } from '@/bus/Bus';
+import { QueryLoggerMiddleware } from '@/bus/middleware/QueryLoggerMiddleware';
+import type { Query } from '@/bus/query/Query';
+import { FakeLogger } from '../../logger/FakeLogger';
+import type { FakeResponse } from '../query/FakeResponse';
+import { FakeViewCurrentNameQuery } from '../query/FakeViewCurrentNameQuery';
+import { FakeViewCurrentNameQueryHandler } from '../query/FakeViewCurrentNameQueryHandler';
 
 describe('[QueryBus]', () => {
     beforeEach(() => {
@@ -34,7 +34,9 @@ describe('[QueryBus]', () => {
             const query = new FakeViewCurrentNameQuery('Current name');
 
             // Act & Assert
-            await expect(queryBus.execute(query)).rejects.toThrow('No handler registered for FakeViewCurrentNameQuery');
+            await expect(queryBus.execute(query)).rejects.toThrow(
+                'No handler registered for FakeViewCurrentNameQuery'
+            );
         });
     });
 

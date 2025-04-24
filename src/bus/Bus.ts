@@ -1,6 +1,6 @@
-import {Message} from "@/bus/Message";
-import {Middleware} from "@/bus/middleware/Middleware";
-import {IMessageHandler} from "@/bus/IMessageHandler";
+import type { IMessageHandler } from '@/bus/IMessageHandler';
+import type { Message } from '@/bus/Message';
+import type { Middleware } from '@/bus/middleware/Middleware';
 
 export class Bus<M extends Message> {
     private handlers: Map<string, () => IMessageHandler<M>> = new Map();
@@ -10,10 +10,13 @@ export class Bus<M extends Message> {
         const handler = handlerFactory();
         if (!handler.__TAG) {
             throw new Error(
-                "The handler must have a __TAG property to be registered."
+                'The handler must have a __TAG property to be registered.'
             );
         }
-        this.handlers.set(handler.__TAG, handlerFactory as () => IMessageHandler<M>);
+        this.handlers.set(
+            handler.__TAG,
+            handlerFactory as () => IMessageHandler<M>
+        );
     }
 
     use(middleware: Middleware<M>): void {
@@ -25,7 +28,9 @@ export class Bus<M extends Message> {
         const handlerFactory = this.handlers.get(handlerName);
 
         if (!handlerFactory) {
-            throw new Error(`No handler registered for ${message.__TAG}. Please check the __TAG property of both command and handler.`);
+            throw new Error(
+                `No handler registered for ${message.__TAG}. Please check the __TAG property of both command and handler.`
+            );
         }
 
         const handler = handlerFactory();
@@ -34,7 +39,9 @@ export class Bus<M extends Message> {
             return handler.handle(finalMessage) as Promise<R>;
         };
 
-        const middlewareChain = this.middlewares.reduceRight<(message: M) => Promise<R>>(
+        const middlewareChain = this.middlewares.reduceRight<
+            (message: M) => Promise<R>
+        >(
             (next, middleware) => (msg) => middleware.execute(msg, next),
             executeHandler
         );

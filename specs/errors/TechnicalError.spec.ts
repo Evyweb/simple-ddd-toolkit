@@ -1,4 +1,4 @@
-import {InternalServerError} from "./InternalServerError";
+import { InternalServerError } from './InternalServerError';
 
 describe('[TechnicalError]', () => {
     it('should not be identified as a domain error', () => {

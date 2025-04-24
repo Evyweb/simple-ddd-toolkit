@@ -1,4 +1,4 @@
-import {CustomError} from './CustomError';
+import { CustomError } from './CustomError';
 
 export abstract class TechnicalError extends CustomError {
     isDomainError(): boolean {

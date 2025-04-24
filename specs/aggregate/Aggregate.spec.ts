@@ -1,15 +1,15 @@
-import {EventBus} from "@/eventBus/EventBus";
-import {UuidFrom} from "@/valueObject/uuid/UUIDFactory";
-import {FakeLogger} from "../logger/FakeLogger";
-import {LogUsernameChangedCommandHandler} from "./LogUsernameChangedCommandHandler";
-import {FakeUserEvents} from "./FakeUserEvents";
-import {FakeUserAggregate} from "./FakeUserAggregate";
-import {UsernameUpdatedEvent} from "./UsernameUpdatedEvent";
-import {OtherEvent} from "./OtherEvent";
-import {UsernameChangedEventHandler} from "./UsernameChangedEventHandler";
-import {Command} from "@/bus/command/Command";
-import {Bus} from "@/bus/Bus";
-import {EventLoggingMiddleware} from "@/eventBus/EventLoggingMiddleware";
+import { Bus } from '@/bus/Bus';
+import type { Command } from '@/bus/command/Command';
+import { EventBus } from '@/eventBus/EventBus';
+import { EventLoggingMiddleware } from '@/eventBus/EventLoggingMiddleware';
+import { UuidFrom } from '@/valueObject/uuid/UUIDFactory';
+import { FakeLogger } from '../logger/FakeLogger';
+import { FakeUserAggregate } from './FakeUserAggregate';
+import { FakeUserEvents } from './FakeUserEvents';
+import { LogUsernameChangedCommandHandler } from './LogUsernameChangedCommandHandler';
+import { OtherEvent } from './OtherEvent';
+import { UsernameChangedEventHandler } from './UsernameChangedEventHandler';
+import { UsernameUpdatedEvent } from './UsernameUpdatedEvent';
 
 describe('Aggregate', () => {
     let eventBus: EventBus;
@@ -28,16 +28,31 @@ describe('Aggregate', () => {
             let aggregate: FakeUserAggregate;
 
             beforeEach(() => {
-                commandBus.register(() => new LogUsernameChangedCommandHandler(logger));
-                eventBus.on(FakeUserEvents.USER_NAME_UPDATED, () => new UsernameChangedEventHandler(commandBus));
+                commandBus.register(
+                    () => new LogUsernameChangedCommandHandler(logger)
+                );
+                eventBus.on(
+                    FakeUserEvents.USER_NAME_UPDATED,
+                    () => new UsernameChangedEventHandler(commandBus)
+                );
 
                 aggregate = FakeUserAggregate.create({
                     id: UuidFrom('15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a'),
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
-                aggregate.addEvent(new OtherEvent({ eventId: '266e27fe-1c3f-4be6-8646-358e830544d4'}));
+                aggregate.addEvent(
+                    new UsernameUpdatedEvent(
+                        aggregate.id(),
+                        'John Doe',
+                        'Jane Doe'
+                    )
+                );
+                aggregate.addEvent(
+                    new OtherEvent({
+                        eventId: '266e27fe-1c3f-4be6-8646-358e830544d4',
+                    })
+                );
             });
 
             describe('When the dispatch is done by the event bus', () => {
@@ -55,7 +70,9 @@ describe('Aggregate', () => {
                     expect(firstMessage).toEqual(
                         `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                     );
-                    expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                    expect(secondMessage).toEqual(
+                        `User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`
+                    );
                 });
             });
 
@@ -84,7 +101,9 @@ describe('Aggregate', () => {
                         expect(firstMessage).toEqual(
                             `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                         );
-                        expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                        expect(secondMessage).toEqual(
+                            `User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`
+                        );
                     });
                 });
 
@@ -103,7 +122,9 @@ describe('Aggregate', () => {
                         expect(firstMessage).toEqual(
                             `[2024-01-28T01:06:59.782Z] Event "USER_NAME_UPDATED" occurred with ID "266e27fe-1c3f-4be6-8646-358e830544d4". Payload: {"userId":"15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a","newName":"Jane Doe"} - Metadata: {"oldName":"John Doe"}`
                         );
-                        expect(secondMessage).toEqual(`User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`);
+                        expect(secondMessage).toEqual(
+                            `User "John Doe" with ID: "15e4c6b3-0b0a-4b1a-9b0a-9b0a9b0a9b0a" has a new name: "Jane Doe"`
+                        );
                     });
                 });
             });
@@ -117,7 +138,13 @@ describe('Aggregate', () => {
                     name: 'John Doe',
                 });
 
-                aggregate.addEvent(new UsernameUpdatedEvent(aggregate.id(), 'John Doe', 'Jane Doe'));
+                aggregate.addEvent(
+                    new UsernameUpdatedEvent(
+                        aggregate.id(),
+                        'John Doe',
+                        'Jane Doe'
+                    )
+                );
 
                 // Act
                 aggregate.dispatchEvents(eventBus);

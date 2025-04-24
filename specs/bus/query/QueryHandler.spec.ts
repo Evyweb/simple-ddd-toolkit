@@ -1,5 +1,5 @@
-import {FakeViewCurrentNameQuery} from "./FakeViewCurrentNameQuery";
-import {FakeViewCurrentNameQueryHandler} from "./FakeViewCurrentNameQueryHandler";
+import { FakeViewCurrentNameQuery } from './FakeViewCurrentNameQuery';
+import { FakeViewCurrentNameQueryHandler } from './FakeViewCurrentNameQueryHandler';
 
 describe('IQueryHandler', () => {
     it('should correctly execute the query', async () => {

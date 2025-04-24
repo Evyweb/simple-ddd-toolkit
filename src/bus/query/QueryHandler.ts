@@ -1,4 +1,4 @@
-import {Query} from "@/bus/query/Query";
+import type { Query } from '@/bus/query/Query';
 
 export abstract class QueryHandler<TQuery extends Query, TResponse> {
     public abstract readonly __TAG: string;

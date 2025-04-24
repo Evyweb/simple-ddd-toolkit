@@ -1,4 +1,4 @@
-import {ValueObject} from "@/valueObject/ValueObject";
+import { ValueObject } from '@/valueObject/ValueObject';
 
 interface MoneyData {
     amount: number;

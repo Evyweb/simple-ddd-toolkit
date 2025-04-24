@@ -1,6 +1,6 @@
-import {UUID} from './UUID';
+import { UUID } from './UUID';
 
-export function Uuid(value: string, isNew: boolean = true): UUID {
+export function Uuid(value: string, isNew = true): UUID {
     return UUID.create(value, isNew);
 }
 

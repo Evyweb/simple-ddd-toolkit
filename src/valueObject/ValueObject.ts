@@ -18,7 +18,12 @@ export abstract class ValueObject<ValueObjectData> {
     }
 
     private reflectiveEqual(obj1: unknown, obj2: unknown): boolean {
-        if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) {
+        if (
+            typeof obj1 !== 'object' ||
+            typeof obj2 !== 'object' ||
+            obj1 === null ||
+            obj2 === null
+        ) {
             return obj1 === obj2;
         }
 
@@ -33,7 +38,12 @@ export abstract class ValueObject<ValueObjectData> {
             const val1 = Reflect.get(obj1, key);
             const val2 = Reflect.get(obj2, key);
 
-            if (typeof val1 === "object" && val1 !== null && typeof val2 === "object" && val2 !== null) {
+            if (
+                typeof val1 === 'object' &&
+                val1 !== null &&
+                typeof val2 === 'object' &&
+                val2 !== null
+            ) {
                 return this.reflectiveEqual(val1, val2);
             }
 
@@ -42,18 +52,22 @@ export abstract class ValueObject<ValueObjectData> {
     }
 
     private deepFreeze<T>(object: T): T {
-        if (typeof object !== "object" || object === null) {
+        if (typeof object !== 'object' || object === null) {
             return object;
         }
 
         const propNames = Object.getOwnPropertyNames(object) as (keyof T)[];
 
-        propNames.forEach((name) => {
+        for (const name of propNames) {
             const property = object[name];
-            if (property && typeof property === "object" && !Object.isFrozen(property)) {
+            if (
+                property &&
+                typeof property === 'object' &&
+                !Object.isFrozen(property)
+            ) {
                 this.deepFreeze(property);
             }
-        });
+        }
 
         return Object.freeze(object);
     }

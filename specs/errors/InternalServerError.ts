@@ -1,4 +1,4 @@
-import {TechnicalError} from "@/errors/TechnicalError";
+import { TechnicalError } from '@/errors/TechnicalError';
 
 export class InternalServerError extends TechnicalError {
     readonly __TAG: string = 'InternalServerError';

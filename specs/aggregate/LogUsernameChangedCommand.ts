@@ -1,7 +1,7 @@
-import {Command} from "@/bus/command/Command";
+import { Command } from '@/bus/command/Command';
 
 export class LogUsernameChangedCommand extends Command {
-    readonly __TAG = "LogUsernameChangedCommand";
+    readonly __TAG = 'LogUsernameChangedCommand';
 
     constructor(
         public readonly userId: string,

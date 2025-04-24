@@ -1,1 +1,1 @@
-export type Response = object
+export type Response = object;

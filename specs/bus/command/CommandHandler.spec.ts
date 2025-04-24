@@ -1,10 +1,9 @@
-import {FakeCommand} from "./FakeCommand";
-import {FakeLogger} from "../../logger/FakeLogger";
-import {FakeCommandHandler} from "./FakeCommandHandler";
-import {FakeCommandHandlerWithReturnedValue} from "./FakeCommandHandlerWithReturnedValue";
+import { FakeLogger } from '../../logger/FakeLogger';
+import { FakeCommand } from './FakeCommand';
+import { FakeCommandHandler } from './FakeCommandHandler';
+import { FakeCommandHandlerWithReturnedValue } from './FakeCommandHandlerWithReturnedValue';
 
 describe('CommandHandler', () => {
-
     it('should correctly execute the command', async () => {
         // Arrange
         const logger = new FakeLogger();
@@ -25,7 +24,9 @@ describe('CommandHandler', () => {
             const commandHandler = new FakeCommandHandler(new FakeLogger());
 
             // Act
-            const result = await commandHandler.handle(new FakeCommand('fakeName'));
+            const result = await commandHandler.handle(
+                new FakeCommand('fakeName')
+            );
 
             // Assert
             expect(result).toBeUndefined();
@@ -35,10 +36,14 @@ describe('CommandHandler', () => {
     describe('When the command handler returns a value', () => {
         it('should correctly return the value', async () => {
             // Arrange
-            const commandHandler = new FakeCommandHandlerWithReturnedValue(new FakeLogger());
+            const commandHandler = new FakeCommandHandlerWithReturnedValue(
+                new FakeLogger()
+            );
 
             // Act
-            const result = await commandHandler.handle(new FakeCommand('fakeName'));
+            const result = await commandHandler.handle(
+                new FakeCommand('fakeName')
+            );
 
             // Assert
             expect(result).toBe(true);

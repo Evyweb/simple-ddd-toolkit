@@ -1,6 +1,6 @@
-import {FakeUserEntity} from "./FakeUserEntity";
-import {UuidFrom} from "@/valueObject/uuid/UUIDFactory";
-import {UUID} from "@/valueObject/uuid/UUID";
+import { UUID } from '@/valueObject/uuid/UUID';
+import { UuidFrom } from '@/valueObject/uuid/UUIDFactory';
+import { FakeUserEntity } from './FakeUserEntity';
 
 describe('Entity', () => {
     describe('When an entity is created', () => {
@@ -9,7 +9,7 @@ describe('Entity', () => {
             const id = UuidFrom('123e4567-e89b-12d3-a456-426614174000');
 
             // Act
-            const entity = FakeUserEntity.create({id, name: 'fakeName'});
+            const entity = FakeUserEntity.create({ id, name: 'fakeName' });
 
             // Assert
             expect(entity.id()).toEqual('123e4567-e89b-12d3-a456-426614174000');
@@ -23,8 +23,14 @@ describe('Entity', () => {
             it('should return true', () => {
                 // Arrange
                 const id = UuidFrom('123e4567-e89b-12d3-a456-426614174000');
-                const entity1 = FakeUserEntity.create({id, name: 'fakeName1'});
-                const entity2 = FakeUserEntity.create({id, name: 'fakeName2'});
+                const entity1 = FakeUserEntity.create({
+                    id,
+                    name: 'fakeName1',
+                });
+                const entity2 = FakeUserEntity.create({
+                    id,
+                    name: 'fakeName2',
+                });
 
                 // Act
                 const areEquals = entity1.equals(entity2);
@@ -38,10 +44,16 @@ describe('Entity', () => {
             it('should return false', () => {
                 // Arrange
                 const id1 = UuidFrom('11111111-1111-1111-1111-111111111111');
-                const entity1 = FakeUserEntity.create({id: id1, name: 'fakeName1'});
+                const entity1 = FakeUserEntity.create({
+                    id: id1,
+                    name: 'fakeName1',
+                });
 
                 const id2 = UuidFrom('22222222-2222-2222-2222-222222222222');
-                const entity2 = FakeUserEntity.create({id: id2, name: 'fakeName2'});
+                const entity2 = FakeUserEntity.create({
+                    id: id2,
+                    name: 'fakeName2',
+                });
 
                 // Act
                 const areEquals = entity1.equals(entity2);
@@ -56,14 +68,16 @@ describe('Entity', () => {
         it('should have the correct values', () => {
             // Arrange
             const id = UuidFrom('00000000-0000-0000-0000-000000000000');
-            const entity = FakeUserEntity.create({id, name: 'fakeName'});
+            const entity = FakeUserEntity.create({ id, name: 'fakeName' });
 
             // Act
             entity.set('id', UuidFrom('11111111-1111-1111-1111-111111111111'));
             entity.set('name', 'newFakeName');
 
             // Assert
-            expect(entity.get('id').get('value')).toEqual('11111111-1111-1111-1111-111111111111');
+            expect(entity.get('id').get('value')).toEqual(
+                '11111111-1111-1111-1111-111111111111'
+            );
             expect(entity.get('name')).toEqual('newFakeName');
         });
     });
@@ -72,7 +86,7 @@ describe('Entity', () => {
         it('should have the correct values', () => {
             // Arrange
             const id = UuidFrom('00000000-0000-0000-0000-000000000000');
-            const entity = FakeUserEntity.create({id, name: 'fakeName'});
+            const entity = FakeUserEntity.create({ id, name: 'fakeName' });
 
             // Act
             const userObject = entity.toObject();
@@ -87,7 +101,7 @@ describe('Entity', () => {
         it('should return true', () => {
             // Arrange
             const id = UUID.create('123e4567-e89b-12d3-a456-426614174000');
-            const entity = FakeUserEntity.create({id, name: 'fakeName'});
+            const entity = FakeUserEntity.create({ id, name: 'fakeName' });
 
             // Act
             const isNew = entity.isNew();
@@ -101,7 +115,7 @@ describe('Entity', () => {
         it('should return false', () => {
             // Arrange
             const id = UUID.createFrom('123e4567-e89b-12d3-a456-426614174000');
-            const entity = FakeUserEntity.create({id, name: 'fakeName'});
+            const entity = FakeUserEntity.create({ id, name: 'fakeName' });
 
             // Act
             const isNew = entity.isNew();

@@ -1,4 +1,4 @@
-import {AnyDomainError} from "./AnyDomainError";
+import { AnyDomainError } from './AnyDomainError';
 
 describe('[DomainError]', () => {
     it('should not be identified as a technical error', () => {

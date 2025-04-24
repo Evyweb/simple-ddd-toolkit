@@ -1,6 +1,6 @@
 export * from './aggregate/Aggregate';
 export * from './bus/Bus';
-export * from "./bus/Message";
+export * from './bus/Message';
 export * from './bus/command/Command';
 export * from './bus/command/CommandHandler';
 export * from './bus/middleware/CommandLoggerMiddleware';

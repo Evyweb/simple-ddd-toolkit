@@ -1,7 +1,7 @@
-import {DomainEvent} from "@/domainEvent/DomainEvent";
-import {EventBusPort} from "@/eventBus/EventBusPort";
-import {UUID} from "@/valueObject/uuid/UUID";
-import {Entity} from "@/entity/Entity";
+import type { DomainEvent } from '@/domainEvent/DomainEvent';
+import { Entity } from '@/entity/Entity';
+import type { EventBusPort } from '@/eventBus/EventBusPort';
+import type { UUID } from '@/valueObject/uuid/UUID';
 
 export abstract class Aggregate<
     EntityData extends { id: UUID },

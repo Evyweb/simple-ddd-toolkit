@@ -1,6 +1,6 @@
-import {FakeLogger} from "../../logger/FakeLogger";
-import {FakeUpdateNameCommand} from "./FakeUpdateNameCommand";
-import {CommandHandler} from "@/bus/command/CommandHandler";
+import { CommandHandler } from '@/bus/command/CommandHandler';
+import type { FakeLogger } from '../../logger/FakeLogger';
+import type { FakeUpdateNameCommand } from './FakeUpdateNameCommand';
 
 export class FakeUpdateNameCommandHandler extends CommandHandler<FakeUpdateNameCommand> {
     readonly __TAG: string = 'FakeUpdateNameCommandHandler';

@@ -1,4 +1,4 @@
-import {DomainError} from "@/errors/DomainError";
+import { DomainError } from '@/errors/DomainError';
 
 export class AnyDomainError extends DomainError {
     readonly __TAG: string = 'AnyDomainError';

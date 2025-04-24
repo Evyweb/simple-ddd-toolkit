@@ -1,9 +1,12 @@
-import {FakeCommand} from "./FakeCommand";
-import {Logger} from "@/logger/Logger";
-import {CommandHandler} from "@/bus/command/CommandHandler";
+import { CommandHandler } from '@/bus/command/CommandHandler';
+import type { Logger } from '@/logger/Logger';
+import type { FakeCommand } from './FakeCommand';
 
-export class FakeCommandHandlerWithReturnedValue extends CommandHandler<FakeCommand, boolean> {
-    public readonly __TAG = "FakeCommandHandlerWithReturnedValue";
+export class FakeCommandHandlerWithReturnedValue extends CommandHandler<
+    FakeCommand,
+    boolean
+> {
+    public readonly __TAG = 'FakeCommandHandlerWithReturnedValue';
 
     constructor(private readonly logger: Logger) {
         super();

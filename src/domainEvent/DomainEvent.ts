@@ -1,6 +1,6 @@
-import {Message} from "@/bus/Message";
-import {Metadata} from "@/domainEvent/Metadata";
-import {Payload} from "@/domainEvent/Payload";
+import type { Message } from '@/bus/Message';
+import type { Metadata } from '@/domainEvent/Metadata';
+import type { Payload } from '@/domainEvent/Payload';
 
 interface DomainEventData {
     eventId: string;
@@ -20,7 +20,7 @@ export abstract class DomainEvent implements Message {
     public constructor(eventData: DomainEventData) {
         this.eventId = eventData.eventId;
         this.occurredOn = eventData?.occurredOn || new Date();
-        this.metadata = eventData?.metadata || {}
-        this.payload = eventData?.payload || {}
+        this.metadata = eventData?.metadata || {};
+        this.payload = eventData?.payload || {};
     }
 }

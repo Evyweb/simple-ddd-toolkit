@@ -1,5 +1,5 @@
-import {FakeUserData} from './FakeUserData';
-import {Entity} from "@/entity/Entity";
+import { Entity } from '@/entity/Entity';
+import type { FakeUserData } from './FakeUserData';
 
 export class FakeUserEntity extends Entity<FakeUserData> {
     static create(fakeUserData: FakeUserData): FakeUserEntity {

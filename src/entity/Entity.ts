@@ -15,7 +15,7 @@ export abstract class Entity<EntityData extends { id: UUID }> {
         return this.data[key];
     }
 
-    set<Key extends keyof EntityData>(key: Key, value: EntityData[Key]): void {
+    protected set<Key extends keyof EntityData>(key: Key, value: EntityData[Key]): void {
         this.data[key] = value;
     }
 

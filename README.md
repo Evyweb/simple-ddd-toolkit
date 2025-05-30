@@ -603,12 +603,21 @@ const userId = user.id(); // Similar to user.get('id').get('value')
 
 ## Update entity properties
 
-An entity is mutable, which means you can change its properties directly.
+An entity is mutable, which means you can change its properties. 
+Note that the setter method is protected, so you can only update the entity properties using the methods provided by the entity class.
 
 ```typescript
+class User extends Entity<UserData> {
+  // ...
+  renameTo(newName: string): void {
+    this.set("name", newName);
+  }
+  // ...
+}
+
 const user = User.create({ id: UUID.create(), name: "John Doe" });
 
-user.set("name", "Jane Doe");
+user.renameTo("Jane Doe");
 ```
 
 In this example, the `name` property of the user entity is updated to 'Jane Doe'.

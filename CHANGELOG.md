@@ -1,5 +1,11 @@
 # @evyweb/simple-ddd-toolkit
 
+## 0.21.1
+
+### Patch Changes
+
+- entity setters are now protected (thanks to @swenhancer)
+
 ## 0.21.0
 
 ### Minor Changes
